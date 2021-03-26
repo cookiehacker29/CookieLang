@@ -67,6 +67,8 @@ class Latex
                 @tokens << @tokenModel.new(:jump,$&,  pos) 
             when /\A\s/
                 @tokens << @tokenModel.new(:space,$&,  pos)
+            when /\A\,/
+                @tokens << @tokenModel.new(:sep, $&, pos)
             
             # COOKING
             when /\Acookint/
@@ -101,6 +103,10 @@ class Latex
             # PRINT
             when /\Ashow/
                 @tokens << @tokenModel.new(:show,$&,  pos)
+
+            # END
+            when /\Aend/
+                @tokens << @tokenModel.new(:end, $&, pos)
             
             # VALUE
             when /\A".*"/
@@ -141,7 +147,8 @@ class Latex
                 @tokens << @tokenModel.new(:isequal,$&,  pos)
             when /\A\!\=/
                 @tokens << @tokenModel.new(:notequal,$&,  pos)
-                # ARITHMETIC OPERATOR
+
+            # ARITHMETIC OPERATOR
             when /\A\+\+/
                 @tokens << @tokenModel.new(:incr,$&,  pos)
             when /\A\-\-/
@@ -166,7 +173,8 @@ class Latex
                 @tokens << @tokenModel.new(:mult,$&,  pos)
             when /\A\//
                 @tokens << @tokenModel.new(:div,$&,  pos)
-                else
+            
+            else
                 @logger.fatal("Lexical error : #{@src[0..-1]}")
                 raise "Lexical error : #{@src[0..-1]}"
             end

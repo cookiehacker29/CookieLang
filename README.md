@@ -1,6 +1,6 @@
 # CookieLang
 
-![alt](img/logo.png)
+<center><img src="https://raw.githubusercontent.com/erwanaubry/CookieLang/main/img/logo.png" alt="drawing" width="500"/></center>
 
 **_Status_**
 
@@ -24,6 +24,24 @@ Project purpose by the ENSTA-Bretagne school during my first degrees of Master i
 
 The compiler will be created in Ruby for rising my knowledge of IT language.
 
+Here we have the table of the main keyword that we can find on this language !
+
+name | in cookie lang | description
+:-: | :-: | :-:
+function| **cookiedough** FunctionName(...){...}| Create a fonction
+int variable| **cookint** intvariablename| Create a integer variable
+string variable| **cookstring** stringvariablename| Create a string variable
+char variable| **cookchar** charvariablename| Create a char variable
+float variable| **cookfloat** floatvariablename| create a float variable
+double variable| **cookdouble** doublevariablename| create a double variable
+bool variable| **cookbool** boolvariablename| create a bool variable
+return| **eat** variablename| Return a variable
+display| **show** variablename| Display a variable
+exit| **cookieGoAwayAndSay** statut| Exit with statut
+for| **for** cookint;cond;cookint++/cookint--{...}| For loop
+while| **while** cond{...}| While loop
+condition| **if** cond {...}ifelse{...}else{...}| Condition
+
 ## Requirments
 
 You will need of ruby on your computer to run this software :
@@ -40,17 +58,16 @@ The list of package that I had used :
 
 ## Run the software
 
-To run the software, you must type this command on your favorite terminal : 
+To run the software, you must type this command on your favorite terminal :
 
     ruby Main.py
 
 After that, you must see it :
 
-![alt](img/help.png)
+![alt](https://raw.githubusercontent.com/erwanaubry/CookieLang/main/img/help.png)
 
-Like the help page you must specify a script developed in cookielang with the flag **-f**, like it : 
+Like the help page you must specify a script developed in cookielang with the flag **-f**, like it :
 
     ruby Main.py -f script.cookie
-
 
 ## Bugs

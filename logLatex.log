@@ -121,3 +121,27 @@ D, [2021-03-26T09:18:16.353495 #13147] DEBUG -- : Software started
 D, [2021-03-26T09:18:16.353608 #13147] DEBUG -- : File imported
 D, [2021-03-26T09:18:19.230293 #13161] DEBUG -- : Software started
 D, [2021-03-26T09:18:19.230415 #13161] DEBUG -- : File imported
+D, [2021-03-26T15:19:25.344843 #35434] DEBUG -- : Software started
+D, [2021-03-26T15:19:25.344943 #35434] DEBUG -- : File imported
+D, [2021-03-26T15:51:25.758289 #37134] DEBUG -- : Software started
+D, [2021-03-26T15:51:25.758377 #37134] DEBUG -- : File imported
+F, [2021-03-26T15:51:25.758775 #37134] FATAL -- : Lexical error : ; i < 50; i++)
+    show(i)
+end
+D, [2021-03-26T15:52:19.582930 #37194] DEBUG -- : Software started
+D, [2021-03-26T15:52:19.583022 #37194] DEBUG -- : File imported
+F, [2021-03-26T15:52:19.583373 #37194] FATAL -- : Lexical error : , i < 50, i++)
+    show(i)
+end
+D, [2021-03-26T15:53:14.282182 #37256] DEBUG -- : Software started
+D, [2021-03-26T15:53:14.282272 #37256] DEBUG -- : File imported
+F, [2021-03-26T15:53:14.282676 #37256] FATAL -- : Lexical error : ; i < 50; i++)
+    show(i)
+end
+D, [2021-03-26T15:53:25.089721 #37274] DEBUG -- : Software started
+D, [2021-03-26T15:53:25.089831 #37274] DEBUG -- : File imported
+F, [2021-03-26T15:53:25.090259 #37274] FATAL -- : Lexical error : ; i < 50, i++)
+    show(i)
+end
+D, [2021-03-26T15:53:33.796785 #37287] DEBUG -- : Software started
+D, [2021-03-26T15:53:33.796885 #37287] DEBUG -- : File imported
