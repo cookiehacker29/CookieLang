@@ -191,6 +191,6 @@ class Latex
     ##
     # Method to display result
     def display
-        @tokens.each {|token| puts "#{token}".blue}
+        @tokens.each {|token| puts "#{token}"}
     end
 end

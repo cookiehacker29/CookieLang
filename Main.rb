@@ -35,7 +35,7 @@ checking = Latex.new(options[:file])
 checking.lex()
 
 if options[:verbose] 
-  checking.display() 
+  checking.display()
 end
 
 exit(0)
