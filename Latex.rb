@@ -26,7 +26,7 @@ class Latex
     def initialize(filename)
         @src = ""
         @filename = filename
-        @logger = Logger.new('logLatex.log')
+        @logger = Logger.new('log/logLatex.log')
         @logger.level = Logger::DEBUG
         @tokens = []
         @tokenModel = Struct.new(:id,:value,:pos)
