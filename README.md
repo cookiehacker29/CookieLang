@@ -1,5 +1,7 @@
 # CookieLang
 
+![alt](img/logo.png)
+
 **_Status_**
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/c4304dfcf9aa19c69770/maintainability)](https://codeclimate.com/github/erwanaubry/CookieLang/maintainability) [![Build Status](https://travis-ci.org/erwanaubry/CookieLang.svg?branch=main)](https://travis-ci.org/erwanaubry/CookieLang)
@@ -37,5 +39,18 @@ The list of package that I had used :
 - test/unit
 
 ## Run the software
+
+To run the software, you must type this command on your favorite terminal : 
+
+    ruby Main.py
+
+After that, you must see it :
+
+![alt](img/help.png)
+
+Like the help page you must specify a script developed in cookielang with the flag **-f**, like it : 
+
+    ruby Main.py -f script.cookie
+
 
 ## Bugs
