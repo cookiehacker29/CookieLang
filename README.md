@@ -1,20 +1,20 @@
 # CookieLang
 
+**_Status_**
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/c4304dfcf9aa19c69770/maintainability)](https://codeclimate.com/github/erwanaubry/CookieLang/maintainability) [![Build Status](https://travis-ci.org/erwanaubry/CookieLang.svg?branch=main)](https://travis-ci.org/erwanaubry/CookieLang)
+
 **_home_**
 
-https://github.com/erwanaubry/CookieLang
+<https://github.com/erwanaubry/CookieLang>
 
 **_rdoc_**
 
-https://ruby.github.io/rdoc
+<https://ruby.github.io/rdoc>
 
 **_bugs_**
 
-https://github.com/erwanaubry/CookieLang/issues
-
-**_Code quality_**
-
-<a href="https://codeclimate.com/github/erwanaubry/CookieLang/maintainability"><img src="https://api.codeclimate.com/v1/badges/c4304dfcf9aa19c69770/maintainability" /></a>
+<https://github.com/erwanaubry/CookieLang/issues>
 
 ## Description
 
@@ -28,7 +28,7 @@ You will need of ruby on your computer to run this software :
 
     sudo apt install ruby-full
 
-The list of package that I had used : 
+The list of package that I had used :
 
 - strscan
 - logger
