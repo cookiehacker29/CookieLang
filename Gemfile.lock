@@ -24,6 +24,7 @@ DEPENDENCIES
   colorize
   logger
   optparse
+  power_assert
   rake
   simplecov
   strscan
