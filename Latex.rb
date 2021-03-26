@@ -87,8 +87,8 @@ class Latex
             # CONDITION
             when /\Aif/
                 @tokens << @tokenModel.new(:if,$&,  pos)
-            when /\Aifelse/
-                @tokens << @tokenModel.new(:ifelse,$&,  pos)
+            when /\Aelif/
+                @tokens << @tokenModel.new(:elif,$&,  pos)
             when /\Aelse/
                 @tokens << @tokenModel.new(:else,$&,  pos)
             
@@ -109,6 +109,8 @@ class Latex
                 @tokens << @tokenModel.new(:end, $&, pos)
             
             # VALUE
+            when /\A\'[a-zA-Z]\'/
+                @tokens << @tokenModel.new(:char, $&, pos)
             when /\A".*"/
                 @tokens << @tokenModel.new(:string,$&,  pos)
             when /\A[0|1]b/

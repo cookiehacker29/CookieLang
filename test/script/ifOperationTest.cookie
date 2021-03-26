@@ -1,0 +1,7 @@
+if (a < b)
+    value += 5
+elif (a > b)
+    value -= 5
+else
+    value /= 5
+end
