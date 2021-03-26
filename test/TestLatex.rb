@@ -179,6 +179,86 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    def testforLoopTest
+        latex = Latex.new("test/script/forLoopTest.cookie")
+        tokenModel = Struct.new(:id,:value,:pos)
+        testtoken = [
+            tokenModel.new(:for,"for",1),
+            tokenModel.new(:space," ",2),
+            tokenModel.new(:openpar, "(",3),
+            tokenModel.new(:cookint,"cookint",4),
+            tokenModel.new(:space," ",5),
+            tokenModel.new(:id,"i",6),
+            tokenModel.new(:space," ",7),
+            tokenModel.new(:equal,"=",8),
+            tokenModel.new(:space," ",9),
+            tokenModel.new(:int,"0",10),
+            tokenModel.new(:sep,",",11),
+            tokenModel.new(:space," ",12),
+            tokenModel.new(:id,"i",13),
+            tokenModel.new(:space," ",14),
+            tokenModel.new(:lower,"<",15),
+            tokenModel.new(:space," ",16),
+            tokenModel.new(:int,"50",17),
+            tokenModel.new(:sep,",",18),
+            tokenModel.new(:space," ",19),
+            tokenModel.new(:id,"i",20),
+            tokenModel.new(:incr,"++",21),
+            tokenModel.new(:closepar,")",22),
+            tokenModel.new(:jump,"\n",23),
+            tokenModel.new(:space," ",24),
+            tokenModel.new(:space," ",25),
+            tokenModel.new(:space," ",26),
+            tokenModel.new(:space," ",27),
+            tokenModel.new(:show,"show",28),
+            tokenModel.new(:openpar, "(",29),
+            tokenModel.new(:id,"i",30),
+            tokenModel.new(:closepar,")",31),
+            tokenModel.new(:jump,"\n",32),
+            tokenModel.new(:end,"end",33)
+        ]
+        latex.lex()
+
+        assert_equal latex.getToken().to_s, testtoken.to_s
+    end
+
+    def testwhileLoop
+        latex = Latex.new("test/script/whileLoopTest.cookie")
+        tokenModel = Struct.new(:id,:value,:pos)
+        testtoken = [
+            tokenModel.new(:while,"while",1),
+            tokenModel.new(:space," ",2),
+            tokenModel.new(:openpar, "(",3),
+            tokenModel.new(:id,"a",4),
+            tokenModel.new(:space," ",5),
+            tokenModel.new(:notequal,"!=",6),
+            tokenModel.new(:space," ",7),
+            tokenModel.new(:id,"b",8),
+            tokenModel.new(:closepar,")",9),
+            tokenModel.new(:jump,"\n",10),
+            tokenModel.new(:space," ",11),
+            tokenModel.new(:space," ",12),
+            tokenModel.new(:space," ",13),
+            tokenModel.new(:space," ",14),
+            tokenModel.new(:id,"a",15),
+            tokenModel.new(:decr,"--",16),
+            tokenModel.new(:jump,"\n",17),
+            tokenModel.new(:space," ",18),
+            tokenModel.new(:space," ",19),
+            tokenModel.new(:space," ",20),
+            tokenModel.new(:space," ",21),
+            tokenModel.new(:show,"show",22),
+            tokenModel.new(:openpar, "(",23),
+            tokenModel.new(:id,"a",24),
+            tokenModel.new(:closepar,")",25),
+            tokenModel.new(:jump,"\n",26),
+            tokenModel.new(:end,"end",27)
+        ]
+        latex.lex()
+
+        assert_equal latex.getToken().to_s, testtoken.to_s
+    end
+
     ##
     # Method which test is the file is not found
     def testFileNotFound

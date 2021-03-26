@@ -1,0 +1,7 @@
+cookiedough myFunction()
+    cookint a=5+2-5*(8/2)
+    a*=2
+    a=a>>5
+    a=a<<5
+    eat a
+end

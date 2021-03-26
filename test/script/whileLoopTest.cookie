@@ -1,0 +1,4 @@
+while (a != b)
+    a--
+    show(a)
+end

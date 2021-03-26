@@ -91,6 +91,12 @@ class Latex
                 @tokens << @tokenModel.new(:elif,$&,  pos)
             when /\Aelse/
                 @tokens << @tokenModel.new(:else,$&,  pos)
+
+            # LOOP
+            when /\Afor/
+                @tokens << @tokenModel.new(:for,$&,  pos)
+            when /\Awhile/
+                @tokens << @tokenModel.new(:while,$&,  pos)
             
             # EXIT
             when /\AcookieGoAwayAndSay/
@@ -107,6 +113,10 @@ class Latex
             # END
             when /\Aend/
                 @tokens << @tokenModel.new(:end, $&, pos)
+
+            # FONCTION
+            when /\Acookiedough/
+                @tokens << @tokenModel.new(:cookiedough, $&, pos)
             
             # VALUE
             when /\A\'[a-zA-Z]\'/
@@ -115,9 +125,9 @@ class Latex
                 @tokens << @tokenModel.new(:string,$&,  pos)
             when /\A[0|1]b/
                 @tokens << @tokenModel.new(:bool,$&,  pos)
-            when /\A(-)?([0-9]+)(.)([0-9]+)((e)(-)?[0-9]+)?f/
+            when /\A(\-)?([0-9]+)(\.)([0-9]+)((e)(\-)?[0-9]+)?f/
                 @tokens << @tokenModel.new(:float,$&,  pos)
-            when /\A(-)?([0-9]+)(.)([0-9]+)((e)(-)?[0-9]+)?/
+            when /\A(\-)?([0-9]+)(\.)([0-9]+)((e)(\-)?[0-9]+)?/
                 @tokens << @tokenModel.new(:double,$&,  pos)
             when /\A[0-9]+/
                 @tokens << @tokenModel.new(:int,$&,  pos)
@@ -127,10 +137,6 @@ class Latex
             # SYMBOL
             when /\A\=/
                 @tokens << @tokenModel.new(:equal,$&,  pos)
-            when /\A\{/
-                @tokens << @tokenModel.new(:openbraket,$&,  pos)
-            when /\A\}/
-                @tokens << @tokenModel.new(:closebraket,$&,  pos)
             when /\A\(/
                 @tokens << @tokenModel.new(:openpar,$&,  pos)
             when /\A\)/
