@@ -3,7 +3,8 @@ rvm:
  - 2.2
  - jruby
 install:
-  - gem install colorize
-  - gem install strscan
-  - gem install logger
-  - gem install optparse
+ - gem install colorize
+ - gem install strscan
+ - gem install logger
+ - gem install optparse
+ 
