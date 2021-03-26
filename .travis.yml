@@ -9,7 +9,7 @@ install:
   - gem install strscan
   - gem install logger
   - gem install optparse
-  - gem install simplecov
+  - gem install simplecov -v 0.17
   - gem install rake
   - gem install test-unit
   - gem install power_assert

@@ -4,7 +4,11 @@
 
 **_Status_**
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/c4304dfcf9aa19c69770/maintainability)](https://codeclimate.com/github/erwanaubry/CookieLang/maintainability) [![Build Status](https://travis-ci.org/erwanaubry/CookieLang.svg?branch=main)](https://travis-ci.org/erwanaubry/CookieLang)
+name | statuts
+:-: | :-:
+**Build** | [![Build Status](https://travis-ci.org/erwanaubry/CookieLang.svg?branch=main)](https://travis-ci.org/erwanaubry/CookieLang)
+**Maintainability** | [![Maintainability](https://api.codeclimate.com/v1/badges/c4304dfcf9aa19c69770/maintainability)](https://codeclimate.com/github/erwanaubry/CookieLang/maintainability)
+**vulnerability** | [![SecurityStatut](https://snyk.io/test/github/erwanaubry/cookielang/badge.svg)](https://snyk.io/test/github/erwanaubry/cookielang)
 
 **_home_**
 
