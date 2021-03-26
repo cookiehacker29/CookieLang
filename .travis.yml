@@ -9,6 +9,7 @@ install:
   - gem install strscan
   - gem install logger
   - gem install optparse
+  - gem install simplecov
 after_script:
   - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.backend.json coverage/backend/.resultset.json
   - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi
