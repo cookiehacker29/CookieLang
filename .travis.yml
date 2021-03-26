@@ -1,10 +1,9 @@
 language: ruby
 rvm:
- - 2.2
+ - 2.7
  - jruby
 install:
  - gem install colorize
  - gem install strscan
  - gem install logger
  - gem install optparse
- 
