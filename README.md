@@ -42,6 +42,10 @@ for| **for** cookint;cond;cookint++/cookint--{...}| For loop
 while| **while** cond{...}| While loop
 condition| **if** cond {...}ifelse{...}else{...}| Condition
 
+The structure of differents elements of a cookielang code :
+
+![alt](https://raw.githubusercontent.com/erwanaubry/CookieLang/main/img/diagCode.drawio.png)
+
 ## Requirments
 
 You will need of ruby on your computer to run this software :
