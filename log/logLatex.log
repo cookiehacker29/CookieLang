@@ -1,0 +1,5 @@
+# Logfile created on 2021-03-26 19:44:33 +0100 by logger.rb/v1.4.3
+D, [2021-03-26T19:44:33.200792 #53965] DEBUG -- : Software started
+D, [2021-03-26T19:44:33.200884 #53965] DEBUG -- : File imported
+D, [2021-03-26T19:46:35.800754 #54203] DEBUG -- : Software started
+D, [2021-03-26T19:46:35.800912 #54203] DEBUG -- : File imported
