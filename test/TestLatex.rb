@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'test/unit'
 require_relative '../Latex'
 
@@ -25,6 +28,9 @@ class TestLatex < Test::Unit::TestCase
         ]
         latex.lex()
 
+        
+
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 end
+
