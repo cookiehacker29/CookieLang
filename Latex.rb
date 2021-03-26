@@ -8,6 +8,7 @@ require 'optparse'
 #
 # * Author : Erwan AUBRY (cookiehacker)
 # * School : ENSTA-Bretagne
+# * Version : 1.0
 class Latex
 
     ##
@@ -21,7 +22,7 @@ class Latex
     #
     # Examples of using : 
     #
-    #   latex = Lates.new("script.cookie")
+    #   latex = Latex.new("script.cookie")
     def initialize(filename)
         @src = ""
         @filename = filename
