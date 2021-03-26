@@ -4,6 +4,9 @@ rvm:
 before_install:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
+env:
+  global:
+      CC_TEST_REPORTER_ID=de078b150c6d4167c0c477e3df7afa473a5e3e37299123a917bbd9c680b7f98f
 install:
   - gem install colorize
   - gem install strscan
