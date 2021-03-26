@@ -6,7 +6,7 @@ https://github.com/erwanaubry/CookieLang
 
 **_rdoc_**
 
-ruby.github.io/rdoc
+https://ruby.github.io/rdoc
 
 **_bugs_**
 
