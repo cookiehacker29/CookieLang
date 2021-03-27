@@ -42,6 +42,7 @@ class Latex
             LatexChecker::LoopLatex,
             LatexChecker::KeywordLatex,
             LatexChecker::ValueLatex,
+            LatexChecker::ArithmeticOperatorAdvancedLatex,
             LatexChecker::ArithmeticOperatorLatex,
             LatexChecker::ConditionSymbolLatex,
             LatexChecker::SymbolLatex
@@ -69,7 +70,7 @@ class Latex
         data = @src
         ind = 0
         while(status == false && ind <= (@rules.length()-1))
-            status, data = @rules[ind].check(@src,@tokens,@pos)
+            status, data = @rules[ind].check(@src,@tokens,@pos,@tokenModel)
             ind+=1
         end
         [status,data]

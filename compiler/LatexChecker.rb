@@ -1,8 +1,7 @@
 module LatexChecker
     
     class SpecialLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\A\n/
@@ -19,8 +18,7 @@ module LatexChecker
     end
 
     class CookingLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\Acookint/
@@ -43,8 +41,7 @@ module LatexChecker
     end
 
     class ConditionLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\Aif/
@@ -61,8 +58,7 @@ module LatexChecker
     end
 
     class LoopLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\Afor/
@@ -77,8 +73,7 @@ module LatexChecker
     end
 
     class KeywordLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 # EXIT
@@ -109,8 +104,7 @@ module LatexChecker
     end
 
     class ValueLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\A\'[a-zA-Z]\'/
@@ -134,9 +128,8 @@ module LatexChecker
         end
     end
 
-    class ArithmeticOperatorLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+    class ArithmeticOperatorAdvancedLatex
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\A\+\+/
@@ -151,6 +144,18 @@ module LatexChecker
                     tokens << tokenModel.new(:divequal,$&, pos)
                 when /\A\*\=/
                     tokens << tokenModel.new(:multequal,$&, pos)
+                else
+                    success = false
+            end
+            [success,$&]
+        end
+    end
+
+
+    class ArithmeticOperatorLatex
+        def self.check(data, tokens, pos, tokenModel)
+            success = true
+            case data
                 when /\A\<\</
                     tokens << tokenModel.new(:bls,$&, pos)
                 when /\A\>\>/
@@ -170,9 +175,10 @@ module LatexChecker
         end
     end
 
+    
+
     class ConditionSymbolLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
             success = true
             case data
                 when /\A\>\=/
@@ -195,8 +201,8 @@ module LatexChecker
     end
 
     class SymbolLatex
-        def self.check(data, tokens, pos)
-            tokenModel = Struct.new(:id,:value,:pos)
+        def self.check(data, tokens, pos, tokenModel)
+            
             success = true
             case data
                 when /\A\=/
