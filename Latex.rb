@@ -141,20 +141,6 @@ class Latex
                 @tokens << @tokenModel.new(:openpar,$&,  pos)
             when /\A\)/
                 @tokens << @tokenModel.new(:closepar,$&,  pos)
-            
-            # CONDITION SYMBOL
-            when /\A\</
-                @tokens << @tokenModel.new(:lower,$&,  pos)
-            when /\A\<\=/
-                @tokens << @tokenModel.new(:lowerandequal,$&,  pos)
-            when /\A\>/
-                @tokens << @tokenModel.new(:greater,$&,  pos)
-            when /\A\>\=/
-                @tokens << @tokenModel.new(:greaterandequal,$&,  pos)
-            when /\A\=\=/
-                @tokens << @tokenModel.new(:isequal,$&,  pos)
-            when /\A\!\=/
-                @tokens << @tokenModel.new(:notequal,$&,  pos)
 
             # ARITHMETIC OPERATOR
             when /\A\+\+/
@@ -182,6 +168,20 @@ class Latex
             when /\A\//
                 @tokens << @tokenModel.new(:div,$&,  pos)
             
+            # CONDITION SYMBOL
+            when /\A\</
+                @tokens << @tokenModel.new(:lower,$&,  pos)
+            when /\A\<\=/
+                @tokens << @tokenModel.new(:lowerandequal,$&,  pos)
+            when /\A\>/
+                @tokens << @tokenModel.new(:greater,$&,  pos)
+            when /\A\>\=/
+                @tokens << @tokenModel.new(:greaterandequal,$&,  pos)
+            when /\A\=\=/
+                @tokens << @tokenModel.new(:isequal,$&,  pos)
+            when /\A\!\=/
+                @tokens << @tokenModel.new(:notequal,$&,  pos)
+
             else
                 @logger.fatal("Lexical error : #{@src[0..-1]}")
                 raise "Lexical error : #{@src[0..-1]}"

@@ -259,6 +259,79 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    def testFunction
+        latex = Latex.new("test/script/functionTest.cookie")
+        tokenModel = Struct.new(:id,:value,:pos)
+        testtoken = [
+            tokenModel.new(:cookiedough,"cookiedough",1),
+            tokenModel.new(:space, " ", 2),
+            tokenModel.new(:id,"myFunction",3),
+            tokenModel.new(:openpar, "(",4),
+            tokenModel.new(:closepar,")",5),
+            tokenModel.new(:jump,"\n",6),
+            tokenModel.new(:space," ",7),
+            tokenModel.new(:space," ",8),
+            tokenModel.new(:space," ",9),
+            tokenModel.new(:space," ",10),
+            tokenModel.new(:cookint,"cookint",11),
+            tokenModel.new(:space," ",12),
+            tokenModel.new(:id,"a",13),
+            tokenModel.new(:equal,"=",14),
+            tokenModel.new(:int,"5",15),
+            tokenModel.new(:plus,"+",16),
+            tokenModel.new(:int,"2",17),
+            tokenModel.new(:sub,"-",18),
+            tokenModel.new(:int,"5",19),
+            tokenModel.new(:mult,"*",20),
+            tokenModel.new(:openpar, "(",21),
+            tokenModel.new(:int,"8",22),
+            tokenModel.new(:div,"/",23),
+            tokenModel.new(:int,"2",24),
+            tokenModel.new(:closepar,")",25),
+            tokenModel.new(:jump,"\n",26),
+            tokenModel.new(:space," ",27),
+            tokenModel.new(:space," ",28),
+            tokenModel.new(:space," ",29),
+            tokenModel.new(:space," ",30),
+            tokenModel.new(:id,"a",31),
+            tokenModel.new(:multequal,"*=",32),
+            tokenModel.new(:int,"2",33),
+            tokenModel.new(:jump,"\n",34),
+            tokenModel.new(:space," ",35),
+            tokenModel.new(:space," ",36),
+            tokenModel.new(:space," ",37),
+            tokenModel.new(:space," ",38),
+            tokenModel.new(:id,"a",39),
+            tokenModel.new(:equal,"=",40),
+            tokenModel.new(:id,"a",41),
+            tokenModel.new(:brs,">>",42),
+            tokenModel.new(:int,"5",43),
+            tokenModel.new(:jump,"\n",44),
+            tokenModel.new(:space," ",45),
+            tokenModel.new(:space," ",46),
+            tokenModel.new(:space," ",47),
+            tokenModel.new(:space," ",48),
+            tokenModel.new(:id,"a",49),
+            tokenModel.new(:equal,"=",50),
+            tokenModel.new(:id,"a",51),
+            tokenModel.new(:bls,"<<",52),
+            tokenModel.new(:int,"5",53),
+            tokenModel.new(:jump,"\n",54),
+            tokenModel.new(:space," ",55),
+            tokenModel.new(:space," ",56),
+            tokenModel.new(:space," ",57),
+            tokenModel.new(:space," ",58),
+            tokenModel.new(:eat,"eat",59),
+            tokenModel.new(:space," ",60),
+            tokenModel.new(:id,"a",61),
+            tokenModel.new(:jump,"\n",62),
+            tokenModel.new(:end,"end",63)
+        ]
+        latex.lex()
+
+        assert_equal latex.getToken().to_s, testtoken.to_s
+    end
+
     ##
     # Method which test is the file is not found
     def testFileNotFound
