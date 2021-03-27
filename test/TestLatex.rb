@@ -2,7 +2,7 @@ require 'simplecov'
 SimpleCov.start 'rails'
 
 require 'test/unit'
-require_relative '../Latex'
+require_relative '../compiler/Latex'
 
 ##
 # This class allow to test the Latex Test

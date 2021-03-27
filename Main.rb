@@ -1,5 +1,5 @@
-require_relative 'Latex'
-require_relative 'Parser'
+require_relative 'compiler/Latex'
+require_relative 'compiler/Parser'
 
 puts "                 _    _      _                _             \n".blue.bold +
      "                | |  (_)    | |              | |            \n".blue.bold +
