@@ -57,6 +57,10 @@ You will need of ruby on your computer to run this software :
 
     sudo apt install ruby-full
 
+And install the required libraries :
+
+    bundle install
+
 The list of package that I had used :
 
 - strscan
