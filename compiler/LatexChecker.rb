@@ -2,7 +2,7 @@ module LatexChecker
     
     class SpecialLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            special = true
             case data
                 when /\A\n/
                     tokens << tokenModel.new(:jump,$&,  pos) 
@@ -11,15 +11,15 @@ module LatexChecker
                 when /\A\,/
                     tokens << tokenModel.new(:sep, $&, pos)
                 else
-                    success = false
+                    special = false
             end
-            [success,$&]
+            [special,$&]
         end
     end
 
     class CookingLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            cooking = true
             case data
                 when /\Acookint/
                     tokens << tokenModel.new(:cookint,$&,  pos)
@@ -34,15 +34,15 @@ module LatexChecker
                 when /\Acookbool/
                     tokens << tokenModel.new(:cookbool,$&,  pos)
                 else
-                    success = false
+                    cooking = false
             end
-            [success,$&]
+            [cooking,$&]
         end
     end
 
     class ConditionLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            condition = true
             case data
                 when /\Aif/
                     tokens << tokenModel.new(:if,$&,  pos)
@@ -51,30 +51,30 @@ module LatexChecker
                 when /\Aelse/
                     tokens << tokenModel.new(:else,$&,  pos)
                 else
-                    success = false
+                    condition = false
             end
-            [success,$&]
+            [condition,$&]
         end
     end
 
     class LoopLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            isloop = true
             case data
                 when /\Afor/
                     tokens << tokenModel.new(:for,$&,  pos)
                 when /\Awhile/
                     tokens << tokenModel.new(:while,$&,  pos)
                 else
-                    success = false
+                    isloop = false
             end
-            [success,$&]
+            [isloop,$&]
         end
     end
 
     class KeywordLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            keyword = true
             case data
                 # EXIT
                 when /\Acookiegoawayandsay/
@@ -97,15 +97,15 @@ module LatexChecker
                     tokens << tokenModel.new(:cookiedough, $&, pos)
                 
                 else
-                    success = false
+                    keyword = false
             end
-            [success,$&]
+            [keyword,$&]
         end
     end
 
     class ValueLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            value = true
             case data
                 when /\A\'[a-zA-Z]\'/
                     tokens << tokenModel.new(:char, $&, pos)
@@ -122,15 +122,15 @@ module LatexChecker
                 when /\A[a-zA-Z]+/
                     tokens << tokenModel.new(:id,$&,  pos)
                 else
-                    success = false
+                    value = false
             end
-            [success,$&]
+            [value,$&]
         end
     end
 
     class ArithmeticOperatorAdvancedLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            aoa = true
             case data
                 when /\A\+\+/
                     tokens << tokenModel.new(:incr,$&,  pos)
@@ -145,16 +145,16 @@ module LatexChecker
                 when /\A\*\=/
                     tokens << tokenModel.new(:multequal,$&, pos)
                 else
-                    success = false
+                    aoa = false
             end
-            [success,$&]
+            [aoa,$&]
         end
     end
 
 
     class ArithmeticOperatorLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            ao = true
             case data
                 when /\A\<\</
                     tokens << tokenModel.new(:bls,$&, pos)
@@ -169,9 +169,9 @@ module LatexChecker
                 when /\A\//
                     tokens << tokenModel.new(:div,$&,  pos)
                 else
-                    success = false
+                    ao = false
             end
-            [success,$&]
+            [ao,$&]
         end
     end
 
@@ -179,7 +179,7 @@ module LatexChecker
 
     class ConditionSymbolLatex
         def self.check(data, tokens, pos, tokenModel)
-            success = true
+            co = true
             case data
                 when /\A\>\=/
                     tokens << tokenModel.new(:greaterandequal,$&,  pos)
@@ -194,16 +194,15 @@ module LatexChecker
                 when /\A\!\=/
                     tokens << tokenModel.new(:notequal,$&,  pos)
                 else
-                    success = false
+                    co = false
             end
-            [success,$&]
+            [co,$&]
         end
     end
 
     class SymbolLatex
         def self.check(data, tokens, pos, tokenModel)
-            
-            success = true
+            symbol = true
             case data
                 when /\A\=/
                     tokens << tokenModel.new(:equal,$&,  pos)
@@ -212,9 +211,9 @@ module LatexChecker
                 when /\A\)/
                     tokens << tokenModel.new(:closepar,$&,  pos)
                 else
-                    success = false
+                    symbol = false
             end
-            [success,$&]
+            [symbol,$&]
         end
     end
 
