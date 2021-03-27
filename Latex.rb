@@ -3,6 +3,8 @@ require 'logger'
 require 'colorize'
 require 'optparse'
 
+class FileNotSpecifyError < StandardError; end
+
 ##
 # This class is used to check the cookieCode and generate a list of tokens which are a structure compose by an ID, a value and a position
 #
@@ -37,11 +39,7 @@ class Latex
     private def importcode
         begin
             @logger.debug("Software started")
-            if @filename == nil
-                puts "File not specify".red
-                @logger.error("File not specify")
-                exit(-1)
-            end
+            raise FileNotSpecifyError if @filename == nil
             @src = File.open(@filename,"r").read
             puts "File imported !".green
             @logger.debug("File imported")
@@ -99,7 +97,7 @@ class Latex
                 @tokens << @tokenModel.new(:while,$&,  pos)
             
             # EXIT
-            when /\AcookieGoAwayAndSay/
+            when /\Acookiegoawayandsay/
                 @tokens << @tokenModel.new(:cookiegoawayandsay,$&,  pos)
             
             # RETURN
@@ -133,14 +131,6 @@ class Latex
                 @tokens << @tokenModel.new(:int,$&,  pos)
             when /\A[a-zA-Z]+/
                 @tokens << @tokenModel.new(:id,$&,  pos)
-        
-            # SYMBOL
-            when /\A\=/
-                @tokens << @tokenModel.new(:equal,$&,  pos)
-            when /\A\(/
-                @tokens << @tokenModel.new(:openpar,$&,  pos)
-            when /\A\)/
-                @tokens << @tokenModel.new(:closepar,$&,  pos)
 
             # ARITHMETIC OPERATOR
             when /\A\+\+/
@@ -167,20 +157,28 @@ class Latex
                 @tokens << @tokenModel.new(:mult,$&,  pos)
             when /\A\//
                 @tokens << @tokenModel.new(:div,$&,  pos)
-            
+
             # CONDITION SYMBOL
-            when /\A\</
-                @tokens << @tokenModel.new(:lower,$&,  pos)
-            when /\A\<\=/
-                @tokens << @tokenModel.new(:lowerandequal,$&,  pos)
-            when /\A\>/
-                @tokens << @tokenModel.new(:greater,$&,  pos)
             when /\A\>\=/
                 @tokens << @tokenModel.new(:greaterandequal,$&,  pos)
+            when /\A\<\=/
+                @tokens << @tokenModel.new(:lowerandequal,$&,  pos)
+            when /\A\</
+                @tokens << @tokenModel.new(:lower,$&,  pos)
+            when /\A\>/
+                @tokens << @tokenModel.new(:greater,$&,  pos)
             when /\A\=\=/
                 @tokens << @tokenModel.new(:isequal,$&,  pos)
             when /\A\!\=/
                 @tokens << @tokenModel.new(:notequal,$&,  pos)
+        
+            # SYMBOL
+            when /\A\=/
+                @tokens << @tokenModel.new(:equal,$&,  pos)
+            when /\A\(/
+                @tokens << @tokenModel.new(:openpar,$&,  pos)
+            when /\A\)/
+                @tokens << @tokenModel.new(:closepar,$&,  pos)
 
             else
                 @logger.fatal("Lexical error : #{@src[0..-1]}")

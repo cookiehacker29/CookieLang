@@ -1,0 +1,5 @@
+cookbool a=5<=5
+cookbool b=8>=5
+cookbool c=a==5
+
+cookiegoawayandsay 0

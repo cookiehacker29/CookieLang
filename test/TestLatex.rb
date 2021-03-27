@@ -332,15 +332,88 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    def testscript
+        latex = Latex.new("test/script/scriptTest.cookie")
+        tokenModel = Struct.new(:id,:value,:pos)
+        testtoken = [
+            tokenModel.new(:cookbool,"cookbool",1),
+            tokenModel.new(:space," ",2),
+            tokenModel.new(:id,"a",3),
+            tokenModel.new(:equal,"=",4),
+            tokenModel.new(:int,"5",5),
+            tokenModel.new(:lowerandequal, "<=", 6),
+            tokenModel.new(:int,"5",7),
+            tokenModel.new(:jump,"\n",8),
+            tokenModel.new(:cookbool,"cookbool",9),
+            tokenModel.new(:space," ",10),
+            tokenModel.new(:id,"b",11),
+            tokenModel.new(:equal,"=",12),
+            tokenModel.new(:int,"8",13),
+            tokenModel.new(:greaterandequal, ">=", 14),
+            tokenModel.new(:int,"5",15),
+            tokenModel.new(:jump,"\n",16),
+            tokenModel.new(:cookbool,"cookbool",17),
+            tokenModel.new(:space," ",18),
+            tokenModel.new(:id,"c",19),
+            tokenModel.new(:equal,"=",20),
+            tokenModel.new(:id,"a",21),
+            tokenModel.new(:isequal, "==", 22),
+            tokenModel.new(:int,"5",23),
+            tokenModel.new(:jump,"\n",24),
+            tokenModel.new(:jump,"\n",25),
+            tokenModel.new(:cookiegoawayandsay, "cookiegoawayandsay",26),
+            tokenModel.new(:space," ",27),
+            tokenModel.new(:int,"0",28)
+        ]
+        latex.lex()
+
+        assert_equal latex.getToken().to_s, testtoken.to_s
+    end
+
+    def testDisplay
+        latex = Latex.new("test/script/initIntTest.cookie")
+        tokenModel = Struct.new(:id,:value,:pos)
+        testtoken = [
+            tokenModel.new(:cookint,"cookint",1),
+            tokenModel.new(:space," ",2),
+            tokenModel.new(:id,"cookie",3),
+            tokenModel.new(:space," ",4),
+            tokenModel.new(:equal,"=",5),
+            tokenModel.new(:space," ",6),
+            tokenModel.new(:int,"4",7)
+        ]
+        latex.lex()
+
+        v1 = testtoken.each {|token| puts "#{token}"}
+        v2 = latex.display()
+
+        assert_equal v1.to_s ,v2.to_s
+    end
+    
     ##
     # Method which test is the file is not found
     def testFileNotFound
         latex = Latex.new("cookie.cookie")
+        latex.lex()
         assert_throw latex do 
             throw latex 
         end
     end
 
+    def testerrorScript
+        latex = Latex.new("test/script/badScriptTest.cookie")
+        assert_raises do 
+            latex.lex()
+        end
+    end
+
+    def testfileNotSpecify
+        latex = Latex.new(nil)
+        latex.lex()
+        assert_throw latex do 
+            throw latex 
+        end
+    end
 
 end
 
