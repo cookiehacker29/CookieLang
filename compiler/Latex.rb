@@ -5,6 +5,8 @@ require 'optparse'
 
 require_relative 'LatexChecker'
 
+##
+# This class is an exception in the case if the file isn't specify
 class FileNotSpecifyError < StandardError; end
 
 ##

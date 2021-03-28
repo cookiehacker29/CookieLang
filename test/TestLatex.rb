@@ -31,6 +31,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the initialization of String
     def testinitString
         latex = Latex.new("test/script/initStringTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -48,6 +50,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the initialization of Char
     def testinitChar
         latex = Latex.new("test/script/initCharTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -65,6 +69,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the initialization of Float
     def testinitFloat
         latex = Latex.new("test/script/initFloatTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -82,6 +88,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the initialization of Double
     def testinitDouble
         latex = Latex.new("test/script/initDoubleTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -99,6 +107,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the initialization of Bool
     def testinitBool
         latex = Latex.new("test/script/initBoolTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -116,6 +126,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the "if operation"
     def testifOperation
         latex = Latex.new("test/script/ifOperationTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -179,6 +191,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the "for loop"
     def testforLoopTest
         latex = Latex.new("test/script/forLoopTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -222,6 +236,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the "while loop"
     def testwhileLoop
         latex = Latex.new("test/script/whileLoopTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -259,6 +275,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the creation of functions
     def testFunction
         latex = Latex.new("test/script/functionTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -332,6 +350,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test a script
     def testscript
         latex = Latex.new("test/script/scriptTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -370,6 +390,8 @@ class TestLatex < Test::Unit::TestCase
         assert_equal latex.getToken().to_s, testtoken.to_s
     end
 
+    ##
+    # Method which test the "display" function
     def testDisplay
         latex = Latex.new("test/script/initIntTest.cookie")
         tokenModel = Struct.new(:id,:value,:pos)
@@ -391,7 +413,7 @@ class TestLatex < Test::Unit::TestCase
     end
     
     ##
-    # Method which test is the file is not found
+    # Method which test the error "file is not found"
     def testFileNotFound
         latex = Latex.new("cookie.cookie")
         latex.lex()
@@ -400,6 +422,8 @@ class TestLatex < Test::Unit::TestCase
         end
     end
 
+    ##
+    # Method which test the error on a script
     def testerrorScript
         latex = Latex.new("test/script/badScriptTest.cookie")
         assert_raises do 
@@ -407,6 +431,8 @@ class TestLatex < Test::Unit::TestCase
         end
     end
 
+    ##
+    # Method which test the error "file not specify"
     def testfileNotSpecify
         latex = Latex.new(nil)
         latex.lex()
