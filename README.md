@@ -51,6 +51,8 @@ The structure of differents elements of a cookielang code :
 
 ![alt](https://raw.githubusercontent.com/erwanaubry/CookieLang/main/img/diagCode.drawio.png)
 
+The block **operation** correspond to all arithmetic operation we can know with the symbole +, -, *, , /, <<, >>.
+
 ## Requirments
 
 You will need of ruby on your computer to run this software :
