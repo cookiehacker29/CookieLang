@@ -81,6 +81,6 @@ After that, you must see it :
 
 Like the help page you must specify a script developed in cookielang with the flag **-f**, like it :
 
-    ruby Main.py -f script.cookie
+    ruby Main.py --file script.cookie --verbose
 
 ## Bugs

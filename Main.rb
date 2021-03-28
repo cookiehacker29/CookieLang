@@ -16,26 +16,31 @@ ARGV << '-h' if ARGV.empty?
 options = {}
 options[:verbose] = false
 opt_parser = OptionParser.new do |parser|
-  parser.on("-f", "--file FILENAME",
+  parser.on("--file FILENAME",
             "Require the FILENAME before executing your script") do |f|
     puts "[FILE] #{f}".blue
     options[:file] = f
   end
-  parser.on("-v", "--verbose", "Enable the verbose mode") do
+  parser.on("--verbose", "Enable the verbose mode") do
     options[:verbose] = true
   end
-  parser.on_tail("-h", "--help", "Prints this help") do
+  parser.on("--version", "Show version") do
+    puts "CookieLang compiler : 1.0"
+  end
+  parser.on_tail("--help", "Prints this help") do
     puts parser
     exit
   end
     
 end.parse!
 
-checking = Latex.new(options[:file])
-checking.lex()
+if(options.include? :file)
+  checking = Latex.new(options[:file])
+  checking.lex()
 
-if options[:verbose] 
-  checking.display()
+  if options[:verbose] 
+    checking.display()
+  end
 end
 
 exit(0)
