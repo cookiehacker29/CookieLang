@@ -12,17 +12,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +special+ - The value if the data is a special character or not
-        # * +word+ - The corresponding word. 
+        # * +special+ - (Bool) The value if the data is a special character or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             special = true
             case data
@@ -45,17 +45,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +cooking+ - The value if the data is an initialization of variable or not
-        # * +word+ - The corresponding word. 
+        # * +cooking+ - (Bool) The value if the data is an initialization of variable or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             cooking = true
             case data
@@ -84,17 +84,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +condition+ - The value if the data is a condition or not
-        # * +word+ - The corresponding word. 
+        # * +condition+ - (Bool) The value if the data is a condition or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             condition = true
             case data
@@ -117,17 +117,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +isloop+ - The value if the data is a loop or not
-        # * +word+ - The corresponding word. 
+        # * +isloop+ - (Bool) The value if the data is a loop or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             isloop = true
             case data
@@ -148,17 +148,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +keyword+ - The value if the data is a keyword or not
-        # * +word+ - The corresponding word. 
+        # * +keyword+ - (Bool) The value if the data is a keyword or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             keyword = true
             case data
@@ -195,17 +195,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +value+ - The value if the data is a value or not
-        # * +word+ - The corresponding word. 
+        # * +value+ - (Bool) The value if the data is a value or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             value = true
             case data
@@ -236,17 +236,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +aoa+ - The value if the data is an arithmetic operator advanced or not
-        # * +word+ - The corresponding word. 
+        # * +aoa+ - (Bool) The value if the data is an arithmetic operator advanced or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             aoa = true
             case data
@@ -275,17 +275,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +ao+ - The value if the data is an arithmetic operator or not
-        # * +word+ - The corresponding word. 
+        # * +ao+ - (Bool) The value if the data is an arithmetic operator or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             ao = true
             case data
@@ -315,17 +315,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +co+ - The value if the data is a condition symbol or not
-        # * +word+ - The corresponding word. 
+        # * +co+ - (Bool) The value if the data is a condition symbol or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             co = true
             case data
@@ -354,17 +354,17 @@ module LatexChecker
         ##
         # Function allow to check if a data correspond to lexical type
         #
-        # ==== Attributes
+        # ==== Arguments
         #
-        # * +data+ - The data to check.
-        # * +tokens+ - The tokens of the cookie script.
-        # * +pos+ - The position in the script.
-        # * +tokenModel+ - The structure of one token.
+        # * +data+ - (String) The data to check.
+        # * +tokens+ - (Token) The tokens of the cookie script.
+        # * +pos+ - (Integer) The position in the script.
+        # * +tokenModel+ - (Token[]) The structure of one token.
         #
         # ==== Result
         #
-        # * +symbol+ - The value if the data is a simple symbol or not
-        # * +word+ - The corresponding word. 
+        # * +symbol+ - (Bool) The value if the data is a simple symbol or not
+        # * +word+ - (String) The corresponding word. 
         def self.check(data, tokens, pos, tokenModel)
             symbol = true
             case data

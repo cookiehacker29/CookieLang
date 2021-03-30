@@ -20,9 +20,9 @@ class Latex
     ##
     # Function constructor to create an instance of Latex class.
     #
-    # ==== Attributes
+    # ==== Arguments
     #
-    # * +filename+ - The filename of the cookie script.
+    # * +filename+ - (String) The filename of the cookie script.
     #
     # ==== Examples
     #

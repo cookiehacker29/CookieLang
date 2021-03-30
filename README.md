@@ -75,7 +75,7 @@ The list of package that I had used :
 
 To run the software, you must type this command on your favorite terminal :
 
-    ruby Main.py
+    ruby lib/cookielang.rb
 
 After that, you must see it :
 
@@ -83,6 +83,19 @@ After that, you must see it :
 
 Like the help page you must specify a script developed in cookielang with the flag **-f**, like it :
 
-    ruby Main.py --file script.cookie --verbose
+    ruby lib/cookielang.rb --file test/script/function.cookie --verbose
 
+## Install this software
+
+Build the application :
+
+    gem build cookielang.gemspec
+
+Install the software :
+
+    gem install cookielang-1.0.0.gem
+
+Run the software :
+
+    ./bin/cookielang
 ## Bugs

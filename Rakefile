@@ -4,7 +4,7 @@ task :default => [:test, :run]
 
 task :run do 
     puts "Run of software !"
-    ruby "Main.rb"
+    ruby "lib/cookielang.rb"
 end
 
 task :test do
