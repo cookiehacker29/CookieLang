@@ -73,17 +73,19 @@ The list of package that I had used :
 
 ## Run the software
 
-To run the software, you must type this command on your favorite terminal :
+For compile the project, you can just run this command :
 
-    ruby lib/cookielang.rb
+    rake
+
+The Rakefil will run the unit tests and the installation.
 
 After that, you must see it :
 
 ![alt](https://raw.githubusercontent.com/erwanaubry/CookieLang/main/img/help.png)
 
-Like the help page you must specify a script developed in cookielang with the flag **-f**, like it :
+Like the help page you must specify a script developed in cookielang with the flag **--file**, like it :
 
-    ruby lib/cookielang.rb --file test/script/function.cookie --verbose
+    ./bin/cookielang --file test/script/functionTest.cookie --verbose
 
 ## Install this software
 
