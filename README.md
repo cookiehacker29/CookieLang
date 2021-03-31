@@ -79,7 +79,11 @@ For compile the project, you can just run this command :
 
 The Rakefil will run the unit tests and the installation.
 
-After that, you must see it :
+You can now run this software with the command :
+
+    ./bin/cookielang
+
+And you will can see :
 
 ![alt](https://raw.githubusercontent.com/erwanaubry/CookieLang/main/img/help.png)
 
