@@ -5,7 +5,7 @@ VERSION = "1.0.0"
 PROJECTNAME = "cookielang"
 MAINCLASS = "CookieLang"
 
-task :default => [:test, :build, :run]
+task :default => [:test, :build]
 
 task :run do 
     puts "- Run of #{PROJECTNAME} !".blue.bold
