@@ -15,7 +15,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the initialization of Integer
     def testInitInteger
-        latex = Latex.new("test/script/initIntTest.cookie")
+        latex = Latex.new("test/script/initIntTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookint,"cookint",1),
@@ -34,7 +34,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the initialization of String
     def testinitString
-        latex = Latex.new("test/script/initStringTest.cookie")
+        latex = Latex.new("test/script/initStringTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookstring,"cookstring",1),
@@ -53,7 +53,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the initialization of Char
     def testinitChar
-        latex = Latex.new("test/script/initCharTest.cookie")
+        latex = Latex.new("test/script/initCharTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookchar,"cookchar",1),
@@ -72,7 +72,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the initialization of Float
     def testinitFloat
-        latex = Latex.new("test/script/initFloatTest.cookie")
+        latex = Latex.new("test/script/initFloatTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookfloat,"cookfloat",1),
@@ -91,7 +91,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the initialization of Double
     def testinitDouble
-        latex = Latex.new("test/script/initDoubleTest.cookie")
+        latex = Latex.new("test/script/initDoubleTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookdouble,"cookdouble",1),
@@ -110,7 +110,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the initialization of Bool
     def testinitBool
-        latex = Latex.new("test/script/initBoolTest.cookie")
+        latex = Latex.new("test/script/initBoolTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookbool,"cookbool",1),
@@ -129,7 +129,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the "if operation"
     def testifOperation
-        latex = Latex.new("test/script/ifOperationTest.cookie")
+        latex = Latex.new("test/script/ifOperationTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:if,"if",1),
@@ -194,7 +194,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the "for loop"
     def testforLoopTest
-        latex = Latex.new("test/script/forLoopTest.cookie")
+        latex = Latex.new("test/script/forLoopTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:for,"for",1),
@@ -239,7 +239,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the "while loop"
     def testwhileLoop
-        latex = Latex.new("test/script/whileLoopTest.cookie")
+        latex = Latex.new("test/script/whileLoopTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:while,"while",1),
@@ -278,7 +278,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the creation of functions
     def testFunction
-        latex = Latex.new("test/script/functionTest.cookie")
+        latex = Latex.new("test/script/functionTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookiedough,"cookiedough",1),
@@ -353,7 +353,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test a script
     def testscript
-        latex = Latex.new("test/script/scriptTest.cookie")
+        latex = Latex.new("test/script/scriptTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookbool,"cookbool",1),
@@ -391,9 +391,9 @@ class TestLatex < Test::Unit::TestCase
     end
 
     ##
-    # Method which test the "display" function
+    # Method which test the "to_s" function
     def testDisplay
-        latex = Latex.new("test/script/initIntTest.cookie")
+        latex = Latex.new("test/script/initIntTest.cookie", false)
         tokenModel = Struct.new(:id,:value,:pos)
         testtoken = [
             tokenModel.new(:cookint,"cookint",1),
@@ -406,8 +406,9 @@ class TestLatex < Test::Unit::TestCase
         ]
         latex.lex()
 
-        v1 = testtoken.each {|token| puts "#{token}"}
-        v2 = latex.display()
+        v1 = ""
+        testtoken.each {|token| v1 += "#{token}\n"}
+        v2 = latex.to_s
 
         assert_equal v1.to_s ,v2.to_s
     end
@@ -415,7 +416,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the error "file is not found"
     def testFileNotFound
-        latex = Latex.new("cookie.cookie")
+        latex = Latex.new("cookie.cookie", false)
         latex.lex()
         assert_throw latex do 
             throw latex 
@@ -425,7 +426,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the error on a script
     def testerrorScript
-        latex = Latex.new("test/script/badScriptTest.cookie")
+        latex = Latex.new("test/script/badScriptTest.cookie", false)
         assert_raises do 
             latex.lex()
         end
@@ -434,7 +435,7 @@ class TestLatex < Test::Unit::TestCase
     ##
     # Method which test the error "file not specify"
     def testfileNotSpecify
-        latex = Latex.new(nil)
+        latex = Latex.new(nil, false)
         latex.lex()
         assert_throw latex do 
             throw latex 

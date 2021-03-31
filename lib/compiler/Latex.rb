@@ -29,8 +29,9 @@ class Latex
     # Examples of using : 
     #
     #   latex = Latex.new("script.cookie")
-    def initialize(filename)
+    def initialize(filename, verbose)
         @src = ""
+        @verbose = verbose
         @filename = filename
         @logger = Logger.new('log/logLatex.log')
         @logger.level = Logger::DEBUG
@@ -58,11 +59,11 @@ class Latex
             @logger.debug("Software started")
             raise FileNotSpecifyError if @filename == nil
             @src = File.open(@filename,"r").read
-            puts "File imported !".green
+            puts "File imported !".green if @verbose
             @logger.debug("File imported")
             
         rescue
-            puts "File not found !".red
+            puts "File not found !".red if @verbose
             @logger.fatal("File not found !")
         end
     end
@@ -102,7 +103,9 @@ class Latex
 
     ##
     # Method to display result
-    def display
-        @tokens.each {|token| puts "#{token}"}
+    def to_s
+        result = ""
+        @tokens.each {|token| result += "#{token}\n"}
+        result
     end
 end

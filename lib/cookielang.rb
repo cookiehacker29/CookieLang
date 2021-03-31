@@ -1,7 +1,16 @@
 require_relative 'compiler/Latex'
 require_relative 'compiler/Parser'
 
+##
+# Main class of CookieLang software
+#
+# * Author : Erwan AUBRY (cookiehacker)
+# * School : ENSTA-Bretagne
+# * Version : 1.0
 class CookieLang  
+
+  ##
+  # Function to run the software
   def self.run
     puts "                 _    _      _                _             \n".blue.bold +
      "                | |  (_)    | |              | |            \n".blue.bold +
@@ -37,11 +46,11 @@ class CookieLang
     end.parse!
 
     if(options.include? :file)
-      checking = Latex.new(options[:file])
+      checking = Latex.new(options[:file], options[:verbose])
       checking.lex()
 
       if options[:verbose] 
-        checking.display()
+        puts checking
       end
     end
 

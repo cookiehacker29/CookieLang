@@ -31,6 +31,7 @@ task :clean do
     sh "rm -rf bin/"
     sh "rm #{PROJECTNAME}-#{VERSION}.gem"
     sh "rm -rf doc/"
+    sh "rm -rf coverage/"
 end
 
 task :test do
