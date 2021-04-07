@@ -1,5 +1,5 @@
-require_relative 'compiler/Latex'
-require_relative 'compiler/Parser'
+require_relative 'compiler/lexical/Latex'
+require_relative 'compiler/syntax/Parser'
 
 ##
 # Main class of CookieLang software
@@ -48,6 +48,10 @@ class CookieLang
     if(options.include? :file)
       checking = Latex.new(options[:file], options[:verbose])
       checking.lex()
+      tokens = checking.getToken()
+
+      parse = Parser.new(tokens)
+      parse.parse()
 
       if options[:verbose] 
         puts checking

@@ -26,6 +26,8 @@ module LatexChecker
         def self.check(data, tokens, pos, tokenModel)
             special = true
             case data
+                when /\A\#.[^\\]*/
+                    tokens << tokenModel.new(:comment, $&, pos)
                 when /\A\n/
                     tokens << tokenModel.new(:jump,$&,  pos) 
                 when /\A\s/

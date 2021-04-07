@@ -16,7 +16,6 @@ class FileNotSpecifyError < StandardError; end
 # * School : ENSTA-Bretagne
 # * Version : 1.0
 class Latex
-
     ##
     # Function constructor to create an instance of Latex class.
     #

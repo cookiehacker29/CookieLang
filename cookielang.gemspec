@@ -5,7 +5,12 @@ Gem::Specification.new do |s|
     s.description   = "Compiler of CookieLang"
     s.authors       = ["Erwan AUBRY"]
     s.email         = "erwan.aubry@ensta-bretagne.org"
-    s.files         = ["lib/cookielang.rb", "lib/compiler/Latex.rb", "lib/compiler/LatexChecker.rb", "lib/compiler/Parser.rb"]
+    s.files         = [
+                        "lib/cookielang.rb", 
+                        "lib/compiler/lexical/Latex.rb", 
+                        "lib/compiler/lexical/LatexChecker.rb", 
+                        "lib/compiler/syntax/Parser.rb"
+                    ]
     s.homepage      = "https://github.com/erwanaubry/CookieLang"
     s.license       = "MIT"
 end
