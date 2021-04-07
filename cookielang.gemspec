@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
     s.files         = [
                         "lib/cookielang.rb", 
                         "lib/compiler/lexical/Latex.rb", 
-                        "lib/compiler/lexical/LatexChecker.rb", 
                         "lib/compiler/syntax/Parser.rb"
                     ]
     s.homepage      = "https://github.com/erwanaubry/CookieLang"

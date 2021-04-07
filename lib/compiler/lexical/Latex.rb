@@ -3,8 +3,6 @@ require 'logger'
 require 'colorize'
 require 'optparse'
 
-require_relative 'LatexChecker'
-
 ##
 # This class is an exception in the case if the file isn't specify
 class FileNotSpecifyError < StandardError; end
@@ -16,6 +14,75 @@ class FileNotSpecifyError < StandardError; end
 # * School : ENSTA-Bretagne
 # * Version : 1.0
 class Latex
+
+    RULES={
+        # Special char
+        :comment => /\#.[^\\]*/,
+        :jump => /\n/,
+        :space => /\s/,
+        :sep => /\,/,
+
+        # Cooking
+        :cookint => /cookint/,
+        :cookstring => /cookstring/,
+        :cookchar => /cookchar/,
+        :cookfloat => /cookfloat/,
+        :cookdouble => /cookdouble/,
+        :cookbool => /cookbool/,
+
+        # Condition
+        :if => /if/,
+        :elif => /elif/,
+        :else => /else/,
+
+        # Loop
+        :for => /for/,
+        :while => /while/,
+
+        # Keyword
+        :cookiegoawayandsay => /cookiegoawayandsay/,
+        :eat => /eat/,
+        :show => /show/,
+        :end => /end/,
+        :cookiedough => /cookiedough/,
+
+        # Value
+        :char => /\'[a-zA-Z]\'/,
+        :string => /".*"/,
+        :bool => /[0|1]b/,
+        :float => /(\-)?([0-9]+)(\.)([0-9]+)((e)(\-)?[0-9]+)?f/,
+        :double => /(\-)?([0-9]+)(\.)([0-9]+)((e)(\-)?[0-9]+)?/,
+        :int => /[0-9]+/,
+        :id => /[a-zA-Z]+/,
+
+        # Arithmetic Operator
+        :incr => /\+\+/,
+        :decr => /\-\-/,
+        :addequal => /\+\=/,
+        :subequal => /\-\=/,
+        :divequal => /\/\=/,
+        :multequal => /\*\=/,
+        :bls => /\<\</,
+        :brs => /\>\>/,
+        :plus => /\+/,
+        :sub => /\-/,
+        :mult => /\*/,
+        :div => /\//,
+
+        # Condition symbol
+        :greaterandequal => /\>\=/,
+        :lowerandequal => /\<\=/,
+        :lower => /\</,
+        :greater => /\>/,
+        :isequal => /\=\=/,
+        :notequal => /\!\=/,
+
+        # Other symbol
+        :equal => /\=/,
+        :openpar => /\(/,
+        :closepar => /\)/,
+    }
+
     ##
     # Function constructor to create an instance of Latex class.
     #
@@ -37,18 +104,6 @@ class Latex
         @tokens = []
         @tokenModel = Struct.new(:id,:value,:pos)
         @pos = 0
-        @rules = [
-            LatexChecker::SpecialLatex,
-            LatexChecker::CookingLatex,
-            LatexChecker::ConditionLatex,
-            LatexChecker::LoopLatex,
-            LatexChecker::KeywordLatex,
-            LatexChecker::ValueLatex,
-            LatexChecker::ArithmeticOperatorAdvancedLatex,
-            LatexChecker::ArithmeticOperatorLatex,
-            LatexChecker::ConditionSymbolLatex,
-            LatexChecker::SymbolLatex
-        ]
     end
 
     ##
@@ -67,30 +122,39 @@ class Latex
         end
     end
 
-    private def checking
-        status = false
-        data = @src
-        ind = 0
-        while(status == false && ind <= (@rules.length()-1))
-            status, data = @rules[ind].check(@src,@tokens,@pos,@tokenModel)
-            ind+=1
-        end
-        [status,data]
-    end
+    # private def checking
+    #     status = false
+    #     data = @src
+    #     ind = 0
+    #     while(status == false && ind <= (@rules.length()-1))
+    #         status, data = @rules[ind].check(@src,@tokens,@pos,@tokenModel)
+    #         ind+=1
+    #     end
+    #     [status,data]
+    # end
 
     ##
     # Method allow to check if the cookie script is lexicaly correct
     public def lex
         importcode()
+        error = false
         @tokens = []
-        while @src.size > 0
+        while @src.size != 0 && error != true
             @pos+=1
-            status,data = checking()
-            if !status
-                @logger.fatal("Lexical error : #{@src[0..-1]}")
-                raise "Lexical error : #{@src[0..-1]}"
+            RULES.each do |k,v|
+                if m = @src.match(/\A#{v}/)
+                    val=m[0]
+                    @tokens << @tokenModel.new(k,val,@pos)
+                    @src=m.post_match
+                    error = false
+                    break
+                else
+                    error = true
+                end
             end
-            @src.delete_prefix!(data)
+        end
+        if error
+            raise "Syntax error : expecting #{kind}. Got '#{@pos}'"
         end
     end
 
