@@ -113,7 +113,7 @@ class Latex
             @logger.debug("Software started")
             raise FileNotSpecifyError if @filename == nil
             @src = File.open(@filename,"r").read
-            puts "File imported !".green if @verbose
+            puts "[OK] File imported !".green if @verbose
             @logger.debug("File imported")
             
         rescue
@@ -121,17 +121,6 @@ class Latex
             @logger.fatal("File not found !")
         end
     end
-
-    # private def checking
-    #     status = false
-    #     data = @src
-    #     ind = 0
-    #     while(status == false && ind <= (@rules.length()-1))
-    #         status, data = @rules[ind].check(@src,@tokens,@pos,@tokenModel)
-    #         ind+=1
-    #     end
-    #     [status,data]
-    # end
 
     ##
     # Method allow to check if the cookie script is lexicaly correct

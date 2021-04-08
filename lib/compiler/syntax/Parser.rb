@@ -1,3 +1,6 @@
+require_relative 'DesignUnit'
+require_relative 'Initialization'
+
 ##
 # Class allow to parsing a cookieLang script
 #
@@ -13,6 +16,7 @@ class Parser
     # * +tokens+ - The tokens of the cookie script.
     def initialize(tokens)
         @tokens = tokens
+        @du = DesignUnit.new()
     end
 
     def acceptIt
@@ -32,10 +36,10 @@ class Parser
         return actual
     end
 
-    def showNext(n=1)
-        @tokens[n-1] if @tokens.any?
+    def showNext
+        @tokens.first
     end
-
+    
     def lookahead(n=2)
         @tokens[n] if @tokens.any?
     end
@@ -43,7 +47,8 @@ class Parser
     def parse
         begin
             @tokens = clear_code()
-            #ast = design_unit()
+            design_unit()
+            puts @du
         rescue Exception => e
             puts "PARSING ERROR : #{e}"
             puts "in cookieLang source at position #{showNext.pos}"
@@ -52,16 +57,174 @@ class Parser
         end
     end
 
-    # def design_unit
-    #     du = ""
-    #     while @tokens.any?
-    #         case showNext().id
-    #             when :cookint
-    #                 du = "cookint"
-    #             end
-    #         end
-    #     end
-    # end
+    def design_unit
+        while @tokens.any?
+            case showNext.id
+                when :cookint
+                    acceptIt
+                    parse_cookint()
+                when :cookdouble
+                    acceptIt
+                    parse_cookdouble()
+                when :cookbool
+                    acceptIt
+                    parse_cookbool()
+                when :cookfloat
+                    acceptIt
+                    parse_cookfloat()
+                when :cookstring
+                    acceptIt
+                    parse_cookstring()
+                when :cookchar
+                    acceptIt
+                    parse_cookchar()
+            end
+        end
+    end
+
+    def parse_cookint
+        case showNext.id
+            when :id
+                value = showNext.value
+                acceptIt
+                if showNext.id == :equal                    
+                    acceptIt
+                    if showNext.id == :int
+                        @du << Initialization::Cookint.new(value, showNext.value)
+                        acceptIt
+                    else
+                        raise "Type error ! The value of cookint type, must be Integer !"
+                        abort
+                    end
+                else
+                    @du << Initialization::Cookint.new(showNext.value, 0)
+                    acceptIt
+                end
+            else
+                raise "The initialisation of a value must be have a identifiant !"
+                abort
+        end 
+    end
+
+    def parse_cookfloat
+        case showNext.id
+            when :id
+                value = showNext.value
+                acceptIt
+                if showNext.id == :equal                    
+                    acceptIt
+                    if showNext.id == :float
+                        @du << Initialization::Cookfloat.new(value, showNext.value)
+                        acceptIt
+                    else
+                        raise "Type error ! The value of cookfloat type, must be Float !"
+                        abort
+                    end
+                else
+                    @du << Initialization::Cookfloat.new(showNext.value, 0)
+                    acceptIt
+                end
+            else
+                raise "The initialisation of a value must be have a identifiant !"
+                abort
+        end 
+    end
+
+    def parse_cookdouble
+        case showNext.id
+            when :id
+                value = showNext.value
+                acceptIt
+                if showNext.id == :equal                    
+                    acceptIt
+                    if showNext.id == :double
+                        @du << Initialization::Cookdouble.new(value, showNext.value)
+                        acceptIt
+                    else
+                        raise "Type error ! The value of cookdouble type, must be Double !"
+                        abort
+                    end
+                else
+                    @du << Initialization::Cookdouble.new(showNext.value, 0)
+                    acceptIt
+                end
+            else
+                raise "The initialisation of a value must be have a identifiant !"
+                abort
+        end 
+    end
+
+    def parse_cookbool
+        case showNext.id
+            when :id
+                value = showNext.value
+                acceptIt
+                if showNext.id == :equal                    
+                    acceptIt
+                    if showNext.id == :bool
+                        @du << Initialization::Cookbool.new(value, showNext.value)
+                        acceptIt
+                    else
+                        raise "Type error ! The value of cookbool type, must be Bool !"
+                        abort
+                    end
+                else
+                    @du << Initialization::Cookbool.new(showNext.value, 0)
+                    acceptIt
+                end
+            else
+                raise "The initialisation of a value must be have a identifiant !"
+                abort
+        end 
+    end
+
+    def parse_cookchar
+        case showNext.id
+            when :id
+                value = showNext.value
+                acceptIt
+                if showNext.id == :equal                    
+                    acceptIt
+                    if showNext.id == :char
+                        @du << Initialization::Cookchar.new(value, showNext.value)
+                        acceptIt
+                    else
+                        raise "Type error ! The value of cookchar type, must be Char !"
+                        abort
+                    end
+                else
+                    @du << Initialization::Cookchar.new(showNext.value, 0)
+                    acceptIt
+                end
+            else
+                raise "The initialisation of a value must be have a identifiant !"
+                abort
+        end 
+    end
+
+    def parse_cookstring
+        case showNext.id
+            when :id
+                value = showNext.value
+                acceptIt
+                if showNext.id == :equal                    
+                    acceptIt
+                    if showNext.id == :string
+                        @du << Initialization::Cookstring.new(value, showNext.value)
+                        acceptIt
+                    else
+                        raise "Type error ! The value of cookstring type, must be String !"
+                        abort
+                    end
+                else
+                    @du << Initialization::Cookstring.new(showNext.value, 0)
+                    acceptIt
+                end
+            else
+                raise "The initialisation of a value must be have a identifiant !"
+                abort
+        end 
+    end
 
     def clear_code
         tmp = []
