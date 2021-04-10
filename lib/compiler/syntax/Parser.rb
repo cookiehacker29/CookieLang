@@ -47,38 +47,49 @@ class Parser
     def parse
         begin
             @tokens = clear_code()
+            puts @tokens
             design_unit()
             puts @du
         rescue Exception => e
             puts "PARSING ERROR : #{e}"
             puts "in cookieLang source at position #{showNext.pos}"
-            puts e.backtrace
+            #puts e.backtrace
             abort
         end
     end
 
     def design_unit
         while @tokens.any?
-            case showNext.id
-                when :cookint
-                    acceptIt
-                    parse_cookint()
-                when :cookdouble
-                    acceptIt
-                    parse_cookdouble()
-                when :cookbool
-                    acceptIt
-                    parse_cookbool()
-                when :cookfloat
-                    acceptIt
-                    parse_cookfloat()
-                when :cookstring
-                    acceptIt
-                    parse_cookstring()
-                when :cookchar
-                    acceptIt
-                    parse_cookchar()
-            end
+            pars_main_key()
+        end
+    end
+
+    def pars_main_key
+        case showNext.id
+            when :cookint
+                acceptIt
+                parse_cookint()
+            when :cookdouble
+                acceptIt
+                parse_cookdouble()
+            when :cookbool
+                acceptIt
+                parse_cookbool()
+            when :cookfloat
+                acceptIt
+                parse_cookfloat()
+            when :cookstring
+                acceptIt
+                parse_cookstring()
+            when :cookchar
+                acceptIt
+                parse_cookchar()
+            when :if
+                acceptIt
+                parse_if()
+            else
+                raise "#{showNext.value} undefined!"
+                abort
         end
     end
 
@@ -224,6 +235,47 @@ class Parser
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
+    end
+
+    def parse_boolean_op
+    
+        if [:id,:bool].include? showNext.id
+            if lookahead(1) != nil
+                if [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? lookahead(1).id
+                    acceptIt
+                    parse_boolean_op()
+                elsif [:id,:bool].include? lookahead(1).id
+                    raise "You must have nothing or boolean symbol after a boolean value or an ID"
+                    abort
+                else
+                    acceptIt
+                end
+            else
+                acceptIt
+            end
+        elsif [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? showNext.id
+            value = lookahead(1).id
+            if [:id, :bool].include? value
+                acceptIt
+                parse_boolean_op()
+            else 
+                raise "You must have an ID or boolean value after #{showNext.value}"
+                abort
+            end
+        end
+
+    end
+
+    def parse_if
+        parse_boolean_op()
+        puts "\n\n"
+        puts @tokens
+        pars_main_key()
+        if showNext == nil || showNext.id != :end
+            raise "All if must finished by end"
+            abort
+        end
+        acceptIt
     end
 
     def clear_code
