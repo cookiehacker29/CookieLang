@@ -1,5 +1,6 @@
 require_relative 'DesignUnit'
 require_relative 'Initialization'
+require_relative 'If'
 
 ##
 # Class allow to parsing a cookieLang script
@@ -17,6 +18,7 @@ class Parser
     def initialize(tokens)
         @tokens = tokens
         @du = []
+        @stringToEval = ""
     end
 
     def acceptIt
@@ -59,11 +61,11 @@ class Parser
 
     def design_unit
         while @tokens.any?
-            pars_main_key()
+            parse_main_key()
         end
     end
 
-    def pars_main_key
+    def parse_main_key
         case showNext.id
             when :cookint
                 acceptIt
@@ -97,7 +99,7 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
-                if findLastInit(value)
+                if findLastInit(value) != nil
                     raise "The variable name '#{value}' is already defined"
                     abort
                 end
@@ -125,7 +127,7 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
-                if findLastInit(value)
+                if findLastInit(value) != nil
                     raise "The variable name '#{value}' is already defined"
                     abort
                 end
@@ -153,7 +155,7 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
-                if findLastInit(value)
+                if findLastInit(value) != nil
                     raise "The variable name '#{value}' is already defined"
                     abort
                 end
@@ -181,7 +183,7 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
-                if findLastInit(value)
+                if findLastInit(value) != nil
                     raise "The variable name '#{value}' is already defined"
                     abort
                 end
@@ -209,7 +211,7 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
-                if findLastInit(value)
+                if findLastInit(value) != nil
                     raise "The variable name '#{value}' is already defined"
                     abort
                 end
@@ -237,7 +239,7 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
-                if findLastInit(value)
+                if findLastInit(value) != nil
                     raise "The variable name '#{value}' is already defined"
                     abort
                 end
@@ -262,24 +264,32 @@ class Parser
     end
 
     def parse_boolean_op
-    
         if [:id,:bool].include? showNext.id
-            if lookahead(1) != nil
-                if [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? lookahead(1).id
-                    acceptIt
-                    parse_boolean_op()
-                elsif [:id,:bool].include? lookahead(1).id
-                    raise "You must have nothing or boolean symbol after a boolean value or an ID"
-                    abort
+            if findLastInit(showNext.value) == nil
+                raise "The variable #{showNext.value} is not defined !"
+                abort
+            else
+                if lookahead(1) != nil
+                    if [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? lookahead(1).id
+                        @stringToEval += findLastInit(showNext.value).getValue()
+                        acceptIt
+                        parse_boolean_op()
+                    elsif [:id,:bool].include? lookahead(1).id
+                        raise "You must have nothing or boolean symbol after a boolean value or an ID"
+                        abort
+                    else
+                        @stringToEval += findLastInit(showNext.value).getValue()
+                        acceptIt
+                    end
                 else
+                    @stringToEval += findLastInit(showNext.value).getValue()
                     acceptIt
                 end
-            else
-                acceptIt
             end
         elsif [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? showNext.id
             value = lookahead(1).id
             if [:id, :bool].include? value
+                @stringToEval += showNext.value
                 acceptIt
                 parse_boolean_op()
             else 
@@ -292,7 +302,9 @@ class Parser
 
     def parse_if
         parse_boolean_op()
-        pars_main_key()
+        puts @stringToEval
+        conditionValue = eval(@stringToEval)
+        parse_main_key()
         if showNext == nil || showNext.id != :end
             raise "All if must finished by end"
             abort
@@ -303,10 +315,11 @@ class Parser
     def findLastInit ident
         @du.each do |d|
             if d.getIdent() == ident
-                return true
+                puts d
+                return d
             end
         end
-        return false
+        return nil
     end
 
     def clear_code
