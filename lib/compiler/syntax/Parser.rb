@@ -93,16 +93,12 @@ class Parser
 
     def design_unit
         while @tokens.any?
-            puts @tokens
-            puts @du
-            puts "================="
             parse_main_key()
             
         end
     end
 
     def parse_main_key
-        puts showNext
         case showNext.id
             when :cookint
                 acceptIt
@@ -143,13 +139,10 @@ class Parser
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
-                    if showNext.id == :int
-                        @du << Initialization::Cookint.new(value, showNext.value)
-                        acceptIt
-                    else
-                        raise "Type error ! The value of cookint type, must be Integer !"
-                        abort
-                    end
+                    parse_arithmetic_op()
+                    arithmeticValue = eval(@stringToEval)
+                    @stringToEval = ""
+                    @du << Initialization::Cookint.new(value, arithmeticValue.to_i)
                 else
                     @du << Initialization::Cookint.new(value, 0)
                 end
@@ -158,7 +151,7 @@ class Parser
                 abort
         end 
     end
-    
+
     def parse_cookdouble
         case showNext.id
             when :id
@@ -170,13 +163,10 @@ class Parser
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
-                    if showNext.id == :double
-                        @du << Initialization::Cookdouble.new(value, showNext.value)
-                        acceptIt
-                    else
-                        raise "Type error ! The value of cookdouble type, must be Double !"
-                        abort
-                    end
+                    parse_arithmetic_op()
+                    arithmeticValue = eval(@stringToEval)
+                    @stringToEval = ""
+                    @du << Initialization::Cookint.new(value, arithmeticValue.to_f)
                 else
                     @du << Initialization::Cookdouble.new(showNext.value, 0.0)
                 end
@@ -318,9 +308,9 @@ class Parser
                     raise "The variable #{showNext.value} is not defined !"
                     abort
                 end
-                value = initObject.getValue()
+                value = initObject.getValue().to_s
             else
-                value = showNext.value[0]
+                value = showNext.value[0].to_s
             end
             if
                 if lookahead(1) != nil
@@ -332,11 +322,11 @@ class Parser
                         raise "You must have nothing or boolean symbol after a boolean value or an ID"
                         abort
                     else
-                        @stringToEval += value.to_s
+                        @stringToEval += value
                         acceptIt
                     end
                 else
-                    @stringToEval += value.to_s
+                    @stringToEval += value
                     acceptIt
                 end
             end
@@ -355,8 +345,8 @@ class Parser
 
     def parse_if
         parse_boolean_op()
-        puts @stringToEval
         conditionValue = eval(@stringToEval)
+        @stringToEval = ""
         parse_main_key()
         if showNext == nil || showNext.id != :end
             raise "All if must finished by end"

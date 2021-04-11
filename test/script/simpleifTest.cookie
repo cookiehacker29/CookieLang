@@ -1,4 +1,4 @@
-cookint a = 5
+cookint a = 5+5/2
 cookint b
 if a < b
 cookint c = 5
