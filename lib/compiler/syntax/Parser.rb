@@ -263,27 +263,37 @@ class Parser
         end 
     end
 
+    def parse_arithmetic_op
+        
+    end
+
     def parse_boolean_op
         if [:id,:bool].include? showNext.id
-            initObject = findLastInit(showNext.value)
-            if initObject == nil
-                raise "The variable #{showNext.value} is not defined !"
-                abort
+            if showNext.id == :id
+                initObject = findLastInit(showNext.value)
+                if initObject == nil
+                    raise "The variable #{showNext.value} is not defined !"
+                    abort
+                end
+                value = initObject.getValue()
             else
+                value = showNext.value[0]
+            end
+            if
                 if lookahead(1) != nil
                     if [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? lookahead(1).id
-                        @stringToEval += initObject.getValue()
+                        @stringToEval += value
                         acceptIt
                         parse_boolean_op()
                     elsif [:id,:bool].include? lookahead(1).id
                         raise "You must have nothing or boolean symbol after a boolean value or an ID"
                         abort
                     else
-                        @stringToEval += initObject.getValue()
+                        @stringToEval += value
                         acceptIt
                     end
                 else
-                    @stringToEval += initObject.getValue()
+                    @stringToEval += value
                     acceptIt
                 end
             end
