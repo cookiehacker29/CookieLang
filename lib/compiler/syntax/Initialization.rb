@@ -5,6 +5,14 @@ module Initialization
             @value = value
         end
 
+        def getIdent
+            @ident
+        end
+
+        def getValue
+            @value
+        end
+
         def to_s
             result = "cookint : ident = #{@ident} | value = #{@value}"
             result
@@ -15,6 +23,14 @@ module Initialization
         def initialize(ident,value)
             @ident = ident
             @value = value
+        end
+
+        def getIdent
+            @ident
+        end
+
+        def getValue
+            @value
         end
 
         def to_s
@@ -29,6 +45,14 @@ module Initialization
             @value = value
         end
 
+        def getIdent
+            @ident
+        end
+
+        def getValue
+            @value
+        end
+
         def to_s
             result = "cookdouble : ident = #{@ident} | value = #{@value}"
             result
@@ -39,6 +63,14 @@ module Initialization
         def initialize(ident,value)
             @ident = ident
             @value = value
+        end
+
+        def getIdent
+            @ident
+        end
+
+        def getValue
+            @value
         end
 
         def to_s
@@ -53,6 +85,14 @@ module Initialization
             @value = value
         end
 
+        def getIdent
+            @ident
+        end
+
+        def getValue
+            @value
+        end
+
         def to_s
             result = "cookchar : ident = #{@ident} | value = #{@value}"
             result
@@ -63,6 +103,14 @@ module Initialization
         def initialize(ident,value)
             @ident = ident
             @value = value
+        end
+
+        def getIdent
+            @ident
+        end
+
+        def getValue
+            @value
         end
 
         def to_s

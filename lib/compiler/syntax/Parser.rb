@@ -16,7 +16,7 @@ class Parser
     # * +tokens+ - The tokens of the cookie script.
     def initialize(tokens)
         @tokens = tokens
-        @du = DesignUnit.new()
+        @du = []
     end
 
     def acceptIt
@@ -47,7 +47,6 @@ class Parser
     def parse
         begin
             @tokens = clear_code()
-            puts @tokens
             design_unit()
             puts @du
         rescue Exception => e
@@ -94,9 +93,14 @@ class Parser
     end
 
     def parse_cookint
+        
         case showNext.id
             when :id
                 value = showNext.value
+                if findLastInit(value)
+                    raise "The variable name '#{value}' is already defined"
+                    abort
+                end
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
@@ -121,6 +125,10 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
+                if findLastInit(value)
+                    raise "The variable name '#{value}' is already defined"
+                    abort
+                end
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
@@ -145,6 +153,10 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
+                if findLastInit(value)
+                    raise "The variable name '#{value}' is already defined"
+                    abort
+                end
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
@@ -169,6 +181,10 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
+                if findLastInit(value)
+                    raise "The variable name '#{value}' is already defined"
+                    abort
+                end
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
@@ -193,6 +209,10 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
+                if findLastInit(value)
+                    raise "The variable name '#{value}' is already defined"
+                    abort
+                end
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
@@ -217,6 +237,10 @@ class Parser
         case showNext.id
             when :id
                 value = showNext.value
+                if findLastInit(value)
+                    raise "The variable name '#{value}' is already defined"
+                    abort
+                end
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
@@ -268,14 +292,21 @@ class Parser
 
     def parse_if
         parse_boolean_op()
-        puts "\n\n"
-        puts @tokens
         pars_main_key()
         if showNext == nil || showNext.id != :end
             raise "All if must finished by end"
             abort
         end
         acceptIt
+    end
+
+    def findLastInit ident
+        @du.each do |d|
+            if d.getIdent() == ident
+                return true
+            end
+        end
+        return false
     end
 
     def clear_code
