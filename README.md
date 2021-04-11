@@ -37,7 +37,6 @@ function| **cookiedough** FunctionName(...){...}| Create a fonction
 int variable| **cookint** intvariablename| Create a integer variable
 string variable| **cookstring** stringvariablename| Create a string variable
 char variable| **cookchar** charvariablename| Create a char variable
-float variable| **cookfloat** floatvariablename| create a float variable
 double variable| **cookdouble** doublevariablename| create a double variable
 bool variable| **cookbool** boolvariablename| create a bool variable
 return| **eat** variablename| Return a variable

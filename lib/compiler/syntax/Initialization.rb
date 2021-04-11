@@ -19,26 +19,6 @@ module Initialization
         end
     end
 
-    class Cookfloat
-        def initialize(ident,value)
-            @ident = ident
-            @value = value
-        end
-
-        def getIdent
-            @ident
-        end
-
-        def getValue
-            @value
-        end
-
-        def to_s
-            result = "cookfloat : ident = #{@ident} | value = #{@value}"
-            result
-        end
-    end
-
     class Cookdouble
         def initialize(ident,value)
             @ident = ident

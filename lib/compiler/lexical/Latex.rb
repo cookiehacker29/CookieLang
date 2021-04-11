@@ -26,7 +26,6 @@ class Latex
         :cookint => /cookint/,
         :cookstring => /cookstring/,
         :cookchar => /cookchar/,
-        :cookfloat => /cookfloat/,
         :cookdouble => /cookdouble/,
         :cookbool => /cookbool/,
 
@@ -50,7 +49,6 @@ class Latex
         :char => /\'[a-zA-Z]\'/,
         :string => /".*"/,
         :bool => /[0|1]b/,
-        :float => /(\-)?([0-9]+)(\.)([0-9]+)((e)(\-)?[0-9]+)?f/,
         :double => /(\-)?([0-9]+)(\.)([0-9]+)((e)(\-)?[0-9]+)?/,
         :int => /[0-9]+/,
         :id => /[a-zA-Z]+/,

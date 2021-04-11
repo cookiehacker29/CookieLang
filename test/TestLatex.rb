@@ -70,25 +70,6 @@ class TestLatex < Test::Unit::TestCase
     end
 
     ##
-    # Method which test the initialization of Float
-    def testinitFloat
-        latex = Latex.new("test/script/initFloatTest.cookie", false)
-        tokenModel = Struct.new(:id,:value,:pos)
-        testtoken = [
-            tokenModel.new(:cookfloat,"cookfloat",1),
-            tokenModel.new(:space," ",2),
-            tokenModel.new(:id,"value",3),
-            tokenModel.new(:space," ",4),
-            tokenModel.new(:equal,"=",5),
-            tokenModel.new(:space," ",6),
-            tokenModel.new(:float,"7.5f",7)
-        ]
-        latex.lex()
-
-        assert_equal latex.getToken().to_s, testtoken.to_s
-    end
-
-    ##
     # Method which test the initialization of Double
     def testinitDouble
         latex = Latex.new("test/script/initDoubleTest.cookie", false)

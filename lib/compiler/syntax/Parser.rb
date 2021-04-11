@@ -9,6 +9,37 @@ require_relative 'If'
 # * School : ENSTA-Bretagne
 # * Version : 1.0
 class Parser
+
+    BOOLEANSYMBOL = [
+        :greaterandequal, 
+        :lowerandequal, 
+        :lower, 
+        :greater, 
+        :isequal, 
+        :notequal
+    ]
+
+    ARITHMSYMBOL = [
+        :bls,
+        :brs,
+        :plus,
+        :sub,
+        :mult,
+        :div
+    ]
+
+    ACCEPTBOOLEAN = [
+        :id,
+        :bool
+    ]
+
+    ACCEPTARITHM = [
+        :bool,
+        :double,
+        :int,
+        :id
+    ]
+
     ##
     # Function constructor to create an instance of Parser class.
     #
@@ -49,6 +80,7 @@ class Parser
     def parse
         begin
             @tokens = clear_code()
+            
             design_unit()
             puts @du
         rescue Exception => e
@@ -61,11 +93,16 @@ class Parser
 
     def design_unit
         while @tokens.any?
+            puts @tokens
+            puts @du
+            puts "================="
             parse_main_key()
+            
         end
     end
 
     def parse_main_key
+        puts showNext
         case showNext.id
             when :cookint
                 acceptIt
@@ -114,43 +151,14 @@ class Parser
                         abort
                     end
                 else
-                    @du << Initialization::Cookint.new(showNext.value, 0)
-                    acceptIt
+                    @du << Initialization::Cookint.new(value, 0)
                 end
             else
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
     end
-
-    def parse_cookfloat
-        case showNext.id
-            when :id
-                value = showNext.value
-                if findLastInit(value) != nil
-                    raise "The variable name '#{value}' is already defined"
-                    abort
-                end
-                acceptIt
-                if showNext.id == :equal                    
-                    acceptIt
-                    if showNext.id == :float
-                        @du << Initialization::Cookfloat.new(value, showNext.value)
-                        acceptIt
-                    else
-                        raise "Type error ! The value of cookfloat type, must be Float !"
-                        abort
-                    end
-                else
-                    @du << Initialization::Cookfloat.new(showNext.value, 0)
-                    acceptIt
-                end
-            else
-                raise "The initialisation of a value must be have a identifiant !"
-                abort
-        end 
-    end
-
+    
     def parse_cookdouble
         case showNext.id
             when :id
@@ -170,8 +178,7 @@ class Parser
                         abort
                     end
                 else
-                    @du << Initialization::Cookdouble.new(showNext.value, 0)
-                    acceptIt
+                    @du << Initialization::Cookdouble.new(showNext.value, 0.0)
                 end
             else
                 raise "The initialisation of a value must be have a identifiant !"
@@ -198,8 +205,7 @@ class Parser
                         abort
                     end
                 else
-                    @du << Initialization::Cookbool.new(showNext.value, 0)
-                    acceptIt
+                    @du << Initialization::Cookbool.new(showNext.value, '0b')
                 end
             else
                 raise "The initialisation of a value must be have a identifiant !"
@@ -226,8 +232,7 @@ class Parser
                         abort
                     end
                 else
-                    @du << Initialization::Cookchar.new(showNext.value, 0)
-                    acceptIt
+                    @du << Initialization::Cookchar.new(showNext.value, '')
                 end
             else
                 raise "The initialisation of a value must be have a identifiant !"
@@ -254,8 +259,7 @@ class Parser
                         abort
                     end
                 else
-                    @du << Initialization::Cookstring.new(showNext.value, 0)
-                    acceptIt
+                    @du << Initialization::Cookstring.new(showNext.value, "")
                 end
             else
                 raise "The initialisation of a value must be have a identifiant !"
@@ -264,11 +268,50 @@ class Parser
     end
 
     def parse_arithmetic_op
-        
+        if ACCEPTARITHM.include? showNext.id
+            if showNext.id == :id
+                initObject = findLastInit(showNext.value)
+                if initObject == nil
+                    raise "The variable #{showNext.value} is not defined !"
+                    abort
+                end
+                value = initObject.getValue()
+            else
+                value = showNext.value
+            end
+            if
+                if lookahead(1) != nil
+                    if ARITHMSYMBOL.include? lookahead(1).id
+                        @stringToEval += value
+                        acceptIt
+                        parse_arithmetic_op()
+                    elsif ACCEPTARITHM.include? lookahead(1).id
+                        raise "You must have nothing or arithmetic symbol after a value or an ID"
+                        abort
+                    else
+                        @stringToEval += value.to_s
+                        acceptIt
+                    end
+                else
+                    @stringToEval += value.to_s
+                    acceptIt
+                end
+            end
+        elsif ARITHMSYMBOL.include? showNext.id
+            value = lookahead(1).id
+            if ACCEPTARITHM.include? value
+                @stringToEval += showNext.value
+                acceptIt
+                parse_arithmetic_op()
+            else 
+                raise "You must have an ID or arithmetic value after #{showNext.value}"
+                abort
+            end
+        end
     end
 
     def parse_boolean_op
-        if [:id,:bool].include? showNext.id
+        if ACCEPTBOOLEAN.include? showNext.id
             if showNext.id == :id
                 initObject = findLastInit(showNext.value)
                 if initObject == nil
@@ -281,25 +324,25 @@ class Parser
             end
             if
                 if lookahead(1) != nil
-                    if [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? lookahead(1).id
+                    if BOOLEANSYMBOL.include? lookahead(1).id
                         @stringToEval += value
                         acceptIt
                         parse_boolean_op()
-                    elsif [:id,:bool].include? lookahead(1).id
+                    elsif ACCEPTBOOLEAN.include? lookahead(1).id
                         raise "You must have nothing or boolean symbol after a boolean value or an ID"
                         abort
                     else
-                        @stringToEval += value
+                        @stringToEval += value.to_s
                         acceptIt
                     end
                 else
-                    @stringToEval += value
+                    @stringToEval += value.to_s
                     acceptIt
                 end
             end
-        elsif [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? showNext.id
+        elsif BOOLEANSYMBOL.include? showNext.id
             value = lookahead(1).id
-            if [:id, :bool].include? value
+            if ACCEPTBOOLEAN.include? value
                 @stringToEval += showNext.value
                 acceptIt
                 parse_boolean_op()

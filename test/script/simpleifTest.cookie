@@ -1,5 +1,5 @@
 cookint a = 5
-cookint b = 6
+cookint b
 if a < b
 cookint c = 5
 end
