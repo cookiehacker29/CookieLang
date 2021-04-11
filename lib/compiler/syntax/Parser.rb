@@ -265,24 +265,25 @@ class Parser
 
     def parse_boolean_op
         if [:id,:bool].include? showNext.id
-            if findLastInit(showNext.value) == nil
+            initObject = findLastInit(showNext.value)
+            if initObject == nil
                 raise "The variable #{showNext.value} is not defined !"
                 abort
             else
                 if lookahead(1) != nil
                     if [:greaterandequal, :lowerandequal, :lower, :greater, :isequal, :notequal].include? lookahead(1).id
-                        @stringToEval += findLastInit(showNext.value).getValue()
+                        @stringToEval += initObject.getValue()
                         acceptIt
                         parse_boolean_op()
                     elsif [:id,:bool].include? lookahead(1).id
                         raise "You must have nothing or boolean symbol after a boolean value or an ID"
                         abort
                     else
-                        @stringToEval += findLastInit(showNext.value).getValue()
+                        @stringToEval += initObject.getValue()
                         acceptIt
                     end
                 else
-                    @stringToEval += findLastInit(showNext.value).getValue()
+                    @stringToEval += initObject.getValue()
                     acceptIt
                 end
             end
@@ -297,7 +298,6 @@ class Parser
                 abort
             end
         end
-
     end
 
     def parse_if
