@@ -19,6 +19,11 @@ class Parser
         :notequal
     ]
 
+    BRACE = [
+        :closepar,
+        :openpar
+    ]
+
     ARITHMSYMBOL = [
         :bls,
         :brs,
@@ -50,6 +55,11 @@ class Parser
         @tokens = tokens
         @du = []
         @stringToEval = ""
+        @bcounter = 0
+        @Equation = Struct.new(:bin)
+        @Binary = Struct.new(:lhs,:op,:rhs)
+        @Id = Struct.new(:str)
+        @Op = Struct.new(:symb_str)
     end
 
     def acceptIt
@@ -80,7 +90,6 @@ class Parser
     def parse
         begin
             @tokens = clear_code()
-            
             design_unit()
             puts @du
         rescue Exception => e
@@ -121,6 +130,21 @@ class Parser
             when :if
                 acceptIt
                 parse_if()
+            when :id
+                acceptIt
+                parse_arithmetic_op()
+            when :while
+                acceptIt
+                parse_while()
+            when :show
+                acceptIt
+                parse_expression()
+            when :cookiegoawayandsay
+                acceptIt
+                parse_cookiegoawayandsay()
+            when :return
+                acceptIt
+                parse_return()
             else
                 raise "#{showNext.value} undefined!"
                 abort
@@ -128,7 +152,6 @@ class Parser
     end
 
     def parse_cookint
-        
         case showNext.id
             when :id
                 value = showNext.value
@@ -140,9 +163,8 @@ class Parser
                 if showNext.id == :equal                    
                     acceptIt
                     parse_arithmetic_op()
-                    arithmeticValue = eval(@stringToEval)
+                    @du << Initialization::Cookint.new(value, @stringToEval)
                     @stringToEval = ""
-                    @du << Initialization::Cookint.new(value, arithmeticValue.to_i)
                 else
                     @du << Initialization::Cookint.new(value, 0)
                 end
@@ -164,9 +186,8 @@ class Parser
                 if showNext.id == :equal                    
                     acceptIt
                     parse_arithmetic_op()
-                    arithmeticValue = eval(@stringToEval)
+                    @du << Initialization::Cookint.new(value, @stringToEval)
                     @stringToEval = ""
-                    @du << Initialization::Cookint.new(value, arithmeticValue.to_f)
                 else
                     @du << Initialization::Cookdouble.new(showNext.value, 0.0)
                 end
@@ -265,32 +286,23 @@ class Parser
                     raise "The variable #{showNext.value} is not defined !"
                     abort
                 end
-                value = initObject.getValue()
-            else
-                value = showNext.value
             end
-            if
-                if lookahead(1) != nil
-                    if ARITHMSYMBOL.include? lookahead(1).id
-                        @stringToEval += value
-                        acceptIt
-                        parse_arithmetic_op()
-                    elsif ACCEPTARITHM.include? lookahead(1).id
-                        raise "You must have nothing or arithmetic symbol after a value or an ID"
-                        abort
-                    else
-                        @stringToEval += value.to_s
-                        acceptIt
-                    end
+            if lookahead(1) != nil
+                if ARITHMSYMBOL.include? lookahead(1).id
+                    acceptIt
+                    parse_arithmetic_op()
+                elsif ACCEPTARITHM.include? lookahead(1).id
+                    raise "You must have nothing or arithmetic symbol after a value or an ID"
+                    abort
                 else
-                    @stringToEval += value.to_s
                     acceptIt
                 end
-            end
+            else
+                acceptIt
+            end  
         elsif ARITHMSYMBOL.include? showNext.id
             value = lookahead(1).id
             if ACCEPTARITHM.include? value
-                @stringToEval += showNext.value
                 acceptIt
                 parse_arithmetic_op()
             else 
@@ -307,33 +319,24 @@ class Parser
                 if initObject == nil
                     raise "The variable #{showNext.value} is not defined !"
                     abort
-                end
-                value = initObject.getValue().to_s
-            else
-                value = showNext.value[0].to_s
+                end                
             end
-            if
-                if lookahead(1) != nil
-                    if BOOLEANSYMBOL.include? lookahead(1).id
-                        @stringToEval += value
-                        acceptIt
-                        parse_boolean_op()
-                    elsif ACCEPTBOOLEAN.include? lookahead(1).id
-                        raise "You must have nothing or boolean symbol after a boolean value or an ID"
-                        abort
-                    else
-                        @stringToEval += value
-                        acceptIt
-                    end
+            if lookahead(1) != nil
+                if BOOLEANSYMBOL.include? lookahead(1).id
+                    acceptIt
+                    parse_boolean_op()
+                elsif ACCEPTBOOLEAN.include? lookahead(1).id
+                    raise "You must have nothing or boolean symbol after a boolean value or an ID"
+                    abort
                 else
-                    @stringToEval += value
                     acceptIt
                 end
+            else
+                acceptIt
             end
         elsif BOOLEANSYMBOL.include? showNext.id
             value = lookahead(1).id
             if ACCEPTBOOLEAN.include? value
-                @stringToEval += showNext.value
                 acceptIt
                 parse_boolean_op()
             else 
@@ -345,8 +348,6 @@ class Parser
 
     def parse_if
         parse_boolean_op()
-        conditionValue = eval(@stringToEval)
-        @stringToEval = ""
         parse_main_key()
         if showNext == nil || showNext.id != :end
             raise "All if must finished by end"
@@ -355,10 +356,36 @@ class Parser
         acceptIt
     end
 
+    def parse_while
+        parse_boolean_op()
+        parse_main_key()
+        if showNext == nil || showNext.id != :end
+            raise "All while must finished by end"
+            abort
+        end
+        acceptIt
+    end
+
+    def parse_show
+        parse_arithmetic_op()
+    end
+
+    def parse_cookiegoawayandsay
+        if showNext.id == :int
+            acceptIt
+        else
+            raise "cookiegoawayandsay take only int !"
+            abort
+        end
+    end
+
+    def parse_return
+        parse_arithmetic_op()
+    end
+
     def findLastInit ident
         @du.each do |d|
             if d.getIdent() == ident
-                puts d
                 return d
             end
         end
