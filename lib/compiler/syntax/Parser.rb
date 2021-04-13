@@ -45,6 +45,11 @@ class Parser
         :id
     ]
 
+    Op = Struct.new(:symb_str)
+    Id = Struct.new(:str)
+    Binary = Struct.new(:lhs,:op,:rhs)
+    Equation = Struct.new(:bin)
+
     ##
     # Function constructor to create an instance of Parser class.
     #
@@ -56,10 +61,6 @@ class Parser
         @du = []
         @stringToEval = ""
         @bcounter = 0
-        @Equation = Struct.new(:bin)
-        @Binary = Struct.new(:lhs,:op,:rhs)
-        @Id = Struct.new(:str)
-        @Op = Struct.new(:symb_str)
     end
 
     def acceptIt
@@ -162,9 +163,7 @@ class Parser
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
-                    parse_arithmetic_op()
-                    @du << Initialization::Cookint.new(value, @stringToEval)
-                    @stringToEval = ""
+                    @du << Initialization::Cookint.new(value, parse_arithmetic_op())
                 else
                     @du << Initialization::Cookint.new(value, 0)
                 end
@@ -185,9 +184,7 @@ class Parser
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
-                    parse_arithmetic_op()
-                    @du << Initialization::Cookint.new(value, @stringToEval)
-                    @stringToEval = ""
+                    @du << Initialization::Cookint.new(value, parse_arithmetic_op())
                 else
                     @du << Initialization::Cookdouble.new(showNext.value, 0.0)
                 end
@@ -278,7 +275,11 @@ class Parser
         end 
     end
 
-    def parse_arithmetic_op
+    def parse_arithmetic_op(eq=nil, newbin=nil)
+        if eq==nil
+            newbin = Binary.new(nil,nil,nil)
+            eq = Equation.new(newbin)
+        end
         if ACCEPTARITHM.include? showNext.id
             if showNext.id == :id
                 initObject = findLastInit(showNext.value)
@@ -289,27 +290,40 @@ class Parser
             end
             if lookahead(1) != nil
                 if ARITHMSYMBOL.include? lookahead(1).id
+                    newbin.lhs = Id.new(showNext.value)
                     acceptIt
-                    parse_arithmetic_op()
+                    parse_arithmetic_op(eq, newbin)
                 elsif ACCEPTARITHM.include? lookahead(1).id
                     raise "You must have nothing or arithmetic symbol after a value or an ID"
                     abort
                 else
+                    newbin.rhs = Id.new(showNext.value)
                     acceptIt
                 end
             else
+                newbin.lhs = Id.new(showNext.value)
                 acceptIt
             end  
         elsif ARITHMSYMBOL.include? showNext.id
             value = lookahead(1).id
             if ACCEPTARITHM.include? value
-                acceptIt
-                parse_arithmetic_op()
+                newbin.op = Op.new(showNext.value)
+                if ARITHMSYMBOL.include? lookahead(2).id
+                    nb = Binary.new(nil,nil,nil)
+                    newbin.rhs = nb 
+                    acceptIt
+                    parse_arithmetic_op(eq, nb)    
+                else
+                    acceptIt
+                    parse_arithmetic_op(eq, newbin)              
+                end
+                
             else 
                 raise "You must have an ID or arithmetic value after #{showNext.value}"
                 abort
             end
         end
+        eq
     end
 
     def parse_boolean_op
@@ -390,6 +404,14 @@ class Parser
             end
         end
         return nil
+    end
+
+    def findLastBinary equation
+        current = equation.bin
+        while current.lhs.is_a?(Binary) == true
+            current = current.lhs
+        end
+        current
     end
 
     def clear_code
