@@ -326,7 +326,11 @@ class Parser
         eq
     end
 
-    def parse_boolean_op
+    def parse_boolean_op(eq=nil, newbin=nil)
+        if eq==nil
+            newbin = Binary.new(nil,nil,nil)
+            eq = Equation.new(newbin)
+        end
         if ACCEPTBOOLEAN.include? showNext.id
             if showNext.id == :id
                 initObject = findLastInit(showNext.value)
@@ -337,27 +341,39 @@ class Parser
             end
             if lookahead(1) != nil
                 if BOOLEANSYMBOL.include? lookahead(1).id
+                    newbin.lhs = Id.new(showNext.value)
                     acceptIt
-                    parse_boolean_op()
+                    parse_boolean_op(eq, newbin)
                 elsif ACCEPTBOOLEAN.include? lookahead(1).id
                     raise "You must have nothing or boolean symbol after a boolean value or an ID"
                     abort
                 else
+                    newbin.rhs = Id.new(showNext.value)
                     acceptIt
                 end
             else
+                newbin.lhs = Id.new(showNext.value)
                 acceptIt
             end
         elsif BOOLEANSYMBOL.include? showNext.id
             value = lookahead(1).id
             if ACCEPTBOOLEAN.include? value
-                acceptIt
-                parse_boolean_op()
+                newbin.op = Op.new(showNext.value)
+                if ARITHMSYMBOL.include? lookahead(2).id
+                    nb = Binary.new(nil,nil,nil)
+                    newbin.rhs = nb 
+                    acceptIt
+                    parse_arithmetic_op(eq, nb)    
+                else
+                    acceptIt
+                    parse_arithmetic_op(eq, newbin)              
+                end
             else 
                 raise "You must have an ID or boolean value after #{showNext.value}"
                 abort
             end
         end
+        eq
     end
 
     def parse_if
