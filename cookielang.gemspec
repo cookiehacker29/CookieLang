@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
                         "lib/compiler/syntax/Expression.rb",
                         "lib/compiler/syntax/While.rb",
                         "lib/compiler/syntax/Show.rb",
-                        "lib/compiler/syntax/Return.rb"
-
+                        "lib/compiler/syntax/Return.rb",
+                        "lib/compiler/syntax/Cookiegoawayandsay.rb"
                     ]
     s.homepage      = "https://github.com/erwanaubry/CookieLang"
     s.license       = "MIT"

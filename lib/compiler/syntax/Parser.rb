@@ -5,6 +5,7 @@ require_relative 'While'
 require_relative 'Expression'
 require_relative 'Show'
 require_relative 'Return'
+require_relative 'Cookiegoawayandsay'
 
 ##
 # Class allow to parsing a cookieLang script
@@ -454,6 +455,7 @@ class Parser
 
     def parse_cookiegoawayandsay lst
         if showNext.id == :int
+            lst << Cookiegoawayandsay.new(showNext.value)
             acceptIt
         else
             raise "cookiegoawayandsay take only int !"
