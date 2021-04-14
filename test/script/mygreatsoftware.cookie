@@ -1,0 +1,12 @@
+cookbool continue = 1b
+cookint i = 0
+cookint max = 5
+while continue
+    i = i + 1
+    if i == max
+        continue = 0b
+    end
+end
+
+
+

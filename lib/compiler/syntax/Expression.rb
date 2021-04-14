@@ -1,19 +1,21 @@
 module Expression
     class Equation
-        attr_accessor :bin
-        def initialize bin
-            @bin=bin
+        attr_accessor :ident,:bin
+        def initialize ident,bin
+            @bin,@ident=bin,ident
         end
         def to_s
-            result = ""
+            if @ident != nil
+                result = "#{@ident} = "
+            else
+                result = ""
+            end
             current = @bin
             while current.is_a?(Binary)
                 result+="#{current.lhs}#{current.op}"
                 current=current.rhs
             end
             result+="#{current}"
-            
-
             result
         end
     end

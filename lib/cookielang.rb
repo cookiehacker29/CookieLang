@@ -53,7 +53,7 @@ class CookieLang
       puts "[OK] Lexical analytic successed".green
 
       puts "[INFO] Run of parsing analytic".blue
-      parse = Parser.new(tokens)
+      parse = Parser.new(tokens,options[:verbose])
       parse.parse()
       puts "[OK] Parsing analytic successed".green
 

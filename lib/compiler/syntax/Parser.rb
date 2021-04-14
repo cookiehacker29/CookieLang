@@ -1,7 +1,10 @@
 require_relative 'DesignUnit'
 require_relative 'Initialization'
 require_relative 'If'
+require_relative 'While'
 require_relative 'Expression'
+require_relative 'Show'
+require_relative 'Return'
 
 ##
 # Class allow to parsing a cookieLang script
@@ -52,8 +55,9 @@ class Parser
     # ==== Attributes
     #
     # * +tokens+ - The tokens of the cookie script.
-    def initialize(tokens)
+    def initialize(tokens, verbose)
         @tokens = tokens
+        @verbose = verbose
         @du = []
         @stringToEval = ""
         @bcounter = 0
@@ -88,7 +92,9 @@ class Parser
         begin
             @tokens = clear_code()
             design_unit()
-            puts @du
+            if @verbose
+                puts @du
+            end
         rescue Exception => e
             puts "PARSING ERROR : #{e}"
             puts "in cookieLang source at position #{showNext.pos}"
@@ -100,7 +106,6 @@ class Parser
     def design_unit
         while @tokens.any?
             parse_main_key()
-            
         end
     end
 
@@ -111,37 +116,38 @@ class Parser
                 parse_cookint(lst)
             when :cookdouble
                 acceptIt
-                parse_cookdouble()
+                parse_cookdouble(lst)
             when :cookbool
                 acceptIt
-                parse_cookbool()
+                parse_cookbool(lst)
             when :cookfloat
                 acceptIt
-                parse_cookfloat()
+                parse_cookfloat(lst)
             when :cookstring
                 acceptIt
-                parse_cookstring()
+                parse_cookstring(lst)
             when :cookchar
                 acceptIt
-                parse_cookchar()
+                parse_cookchar(lst)
             when :if
                 acceptIt
                 parse_if(lst)
             when :id
-                acceptIt
-                parse_arithmetic_op()
+                parse_equation(lst)
             when :while
                 acceptIt
-                parse_while()
+                parse_while(lst)
             when :show
                 acceptIt
-                parse_expression()
+                parse_show(lst)
             when :cookiegoawayandsay
                 acceptIt
-                parse_cookiegoawayandsay()
+                parse_cookiegoawayandsay(lst)
             when :return
                 acceptIt
-                parse_return()
+                parse_return(lst)
+            when :jump
+                acceptIt
             else
                 raise "#{showNext.value} undefined!"
                 abort
@@ -167,9 +173,12 @@ class Parser
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
+        if showNext.id = :jump 
+            acceptIt
+        end
     end
 
-    def parse_cookdouble
+    def parse_cookdouble lst
         case showNext.id
             when :id
                 value = showNext.value
@@ -188,9 +197,12 @@ class Parser
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
+        if showNext.id = :jump 
+            acceptIt
+        end
     end
 
-    def parse_cookbool
+    def parse_cookbool lst
         case showNext.id
             when :id
                 value = showNext.value
@@ -215,9 +227,12 @@ class Parser
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
+        if showNext.id = :jump 
+            acceptIt
+        end
     end
 
-    def parse_cookchar
+    def parse_cookchar lst
         case showNext.id
             when :id
                 value = showNext.value
@@ -242,9 +257,12 @@ class Parser
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
+        if showNext.id = :jump 
+            acceptIt
+        end
     end
 
-    def parse_cookstring
+    def parse_cookstring lst
         case showNext.id
             when :id
                 value = showNext.value
@@ -269,12 +287,35 @@ class Parser
                 raise "The initialisation of a value must be have a identifiant !"
                 abort
         end 
+        if showNext.id = :jump 
+            acceptIt
+        end
+    end
+
+    def parse_equation lst
+        id = showNext.value
+        acceptIt
+        if showNext.id == :equal
+            acceptIt
+            newbin = Expression::Binary.new(nil,nil,nil)
+            eq = Expression::Equation.new(id,newbin)
+            begin
+                lst << parse_arithmetic_op(eq,newbin)
+            rescue
+                begin
+                    lst << parse_boolean_op(eq,newbin)
+                rescue
+                    raise "The operation aren't arithmetic or boolean"
+                end
+            end
+            acceptIt
+        end
     end
 
     def parse_arithmetic_op(eq=nil, newbin=nil)
         if eq==nil
             newbin = Expression::Binary.new(nil,nil,nil)
-            eq = Expression::Equation.new(newbin)
+            eq = Expression::Equation.new(nil,newbin)
         end
         if ACCEPTARITHM.include? showNext.id
             if showNext.id == :id
@@ -325,7 +366,7 @@ class Parser
     def parse_boolean_op(eq=nil, newbin=nil)
         if eq==nil
             newbin = Expression::Binary.new(nil,nil,nil)
-            eq = Expression::Equation.new(newbin)
+            eq = Expression::Equation.new(nil,newbin)
         end
         if ACCEPTBOOLEAN.include? showNext.id
             if showNext.id == :id
@@ -341,6 +382,8 @@ class Parser
                     acceptIt
                     parse_boolean_op(eq, newbin)
                 elsif ACCEPTBOOLEAN.include? lookahead(1).id
+                    puts lookahead(1).id
+                    puts lookahead(1).value
                     raise "You must have nothing or boolean symbol after a boolean value or an ID"
                     abort
                 else
@@ -374,6 +417,7 @@ class Parser
 
     def parse_if lst
         cond = parse_boolean_op()
+        acceptIt
         content = []
         while showNext.id!=:end
             parse_main_key(content)
@@ -384,23 +428,31 @@ class Parser
         end
         lst << If.new(cond,content)
         acceptIt
+        acceptIt
     end
 
-    def parse_while
-        parse_boolean_op()
-        parse_main_key()
+    def parse_while lst
+        cond = parse_boolean_op()
+        acceptIt
+        content = []
+        while showNext.id!=:end
+            parse_main_key(content)
+        end
         if showNext == nil || showNext.id != :end
             raise "All while must finished by end"
             abort
         end
+        lst << While.new(cond,content)
+        acceptIt
         acceptIt
     end
 
-    def parse_show
-        parse_arithmetic_op()
+    def parse_show lst
+        eq = parse_arithmetic_op()
+        lst << Show.new(eq)
     end
 
-    def parse_cookiegoawayandsay
+    def parse_cookiegoawayandsay lst
         if showNext.id == :int
             acceptIt
         else
@@ -409,8 +461,8 @@ class Parser
         end
     end
 
-    def parse_return
-        parse_arithmetic_op()
+    def parse_return lst
+        lst << Return.new(parse_arithmetic_op())
     end
 
     def findLastInit ident
@@ -436,7 +488,7 @@ class Parser
         j = 0
 
         @tokens.each do |t|    
-            if [:comment, :jump, :space].include? t.id 
+            if [:comment, :space].include? t.id 
                 tmp.append(i)
             end
             i +=1
