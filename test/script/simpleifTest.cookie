@@ -1,5 +1,10 @@
 cookint a = 5+5/2-5
 cookint b
-if a < b
-cookint c = 5
+cookint val = 50
+if a < b > val
+    cookint c = 5
+    if b < a
+        cookint d = 4
+    end
+    cookint e = 5*8/6
 end

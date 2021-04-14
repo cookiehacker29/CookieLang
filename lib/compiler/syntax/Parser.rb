@@ -1,6 +1,7 @@
 require_relative 'DesignUnit'
 require_relative 'Initialization'
 require_relative 'If'
+require_relative 'Expression'
 
 ##
 # Class allow to parsing a cookieLang script
@@ -44,11 +45,6 @@ class Parser
         :int,
         :id
     ]
-
-    Op = Struct.new(:symb_str)
-    Id = Struct.new(:str)
-    Binary = Struct.new(:lhs,:op,:rhs)
-    Equation = Struct.new(:bin)
 
     ##
     # Function constructor to create an instance of Parser class.
@@ -108,11 +104,11 @@ class Parser
         end
     end
 
-    def parse_main_key
+    def parse_main_key(lst = @du)
         case showNext.id
             when :cookint
                 acceptIt
-                parse_cookint()
+                parse_cookint(lst)
             when :cookdouble
                 acceptIt
                 parse_cookdouble()
@@ -130,7 +126,7 @@ class Parser
                 parse_cookchar()
             when :if
                 acceptIt
-                parse_if()
+                parse_if(lst)
             when :id
                 acceptIt
                 parse_arithmetic_op()
@@ -152,7 +148,7 @@ class Parser
         end
     end
 
-    def parse_cookint
+    def parse_cookint lst
         case showNext.id
             when :id
                 value = showNext.value
@@ -163,9 +159,9 @@ class Parser
                 acceptIt
                 if showNext.id == :equal                    
                     acceptIt
-                    @du << Initialization::Cookint.new(value, parse_arithmetic_op())
+                    lst << Initialization::Cookint.new(value, parse_arithmetic_op())
                 else
-                    @du << Initialization::Cookint.new(value, 0)
+                    lst << Initialization::Cookint.new(value, 0)
                 end
             else
                 raise "The initialisation of a value must be have a identifiant !"
@@ -277,8 +273,8 @@ class Parser
 
     def parse_arithmetic_op(eq=nil, newbin=nil)
         if eq==nil
-            newbin = Binary.new(nil,nil,nil)
-            eq = Equation.new(newbin)
+            newbin = Expression::Binary.new(nil,nil,nil)
+            eq = Expression::Equation.new(newbin)
         end
         if ACCEPTARITHM.include? showNext.id
             if showNext.id == :id
@@ -290,26 +286,26 @@ class Parser
             end
             if lookahead(1) != nil
                 if ARITHMSYMBOL.include? lookahead(1).id
-                    newbin.lhs = Id.new(showNext.value)
+                    newbin.lhs = Expression::Id.new(showNext.value)
                     acceptIt
                     parse_arithmetic_op(eq, newbin)
                 elsif ACCEPTARITHM.include? lookahead(1).id
                     raise "You must have nothing or arithmetic symbol after a value or an ID"
                     abort
                 else
-                    newbin.rhs = Id.new(showNext.value)
+                    newbin.rhs = Expression::Id.new(showNext.value)
                     acceptIt
                 end
             else
-                newbin.lhs = Id.new(showNext.value)
+                newbin.lhs = Expression::Id.new(showNext.value)
                 acceptIt
             end  
         elsif ARITHMSYMBOL.include? showNext.id
             value = lookahead(1).id
             if ACCEPTARITHM.include? value
-                newbin.op = Op.new(showNext.value)
+                newbin.op = Expression::Op.new(showNext.value)
                 if ARITHMSYMBOL.include? lookahead(2).id
-                    nb = Binary.new(nil,nil,nil)
+                    nb = Expression::Binary.new(nil,nil,nil)
                     newbin.rhs = nb 
                     acceptIt
                     parse_arithmetic_op(eq, nb)    
@@ -328,8 +324,8 @@ class Parser
 
     def parse_boolean_op(eq=nil, newbin=nil)
         if eq==nil
-            newbin = Binary.new(nil,nil,nil)
-            eq = Equation.new(newbin)
+            newbin = Expression::Binary.new(nil,nil,nil)
+            eq = Expression::Equation.new(newbin)
         end
         if ACCEPTBOOLEAN.include? showNext.id
             if showNext.id == :id
@@ -341,32 +337,32 @@ class Parser
             end
             if lookahead(1) != nil
                 if BOOLEANSYMBOL.include? lookahead(1).id
-                    newbin.lhs = Id.new(showNext.value)
+                    newbin.lhs = Expression::Id.new(showNext.value)
                     acceptIt
                     parse_boolean_op(eq, newbin)
                 elsif ACCEPTBOOLEAN.include? lookahead(1).id
                     raise "You must have nothing or boolean symbol after a boolean value or an ID"
                     abort
                 else
-                    newbin.rhs = Id.new(showNext.value)
+                    newbin.rhs = Expression::Id.new(showNext.value)
                     acceptIt
                 end
             else
-                newbin.lhs = Id.new(showNext.value)
+                newbin.lhs = Expression::Id.new(showNext.value)
                 acceptIt
             end
         elsif BOOLEANSYMBOL.include? showNext.id
             value = lookahead(1).id
             if ACCEPTBOOLEAN.include? value
-                newbin.op = Op.new(showNext.value)
-                if ARITHMSYMBOL.include? lookahead(2).id
-                    nb = Binary.new(nil,nil,nil)
+                newbin.op = Expression::Op.new(showNext.value)
+                if BOOLEANSYMBOL.include? lookahead(2).id
+                    nb = Expression::Binary.new(nil,nil,nil)
                     newbin.rhs = nb 
                     acceptIt
-                    parse_arithmetic_op(eq, nb)    
+                    parse_boolean_op(eq, nb)    
                 else
                     acceptIt
-                    parse_arithmetic_op(eq, newbin)              
+                    parse_boolean_op(eq, newbin)              
                 end
             else 
                 raise "You must have an ID or boolean value after #{showNext.value}"
@@ -376,13 +372,17 @@ class Parser
         eq
     end
 
-    def parse_if
-        parse_boolean_op()
-        parse_main_key()
+    def parse_if lst
+        cond = parse_boolean_op()
+        content = []
+        while showNext.id!=:end
+            parse_main_key(content)
+        end
         if showNext == nil || showNext.id != :end
             raise "All if must finished by end"
             abort
         end
+        lst << If.new(cond,content)
         acceptIt
     end
 

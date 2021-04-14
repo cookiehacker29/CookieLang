@@ -14,21 +14,7 @@ module Initialization
         end
 
         def to_s
-            result = "cookint : ident = #{@ident} | value = "
-            if @value.is_a?(Parser::Equation) == true
-                current = @value.bin
-                if current.rhs.is_a?(Parser::Binary)
-                    while current.is_a?(Parser::Binary)
-                        result+="#{current.lhs.str}#{current.op.symb_str}"
-                        current=current.rhs
-                    end
-                else
-                    current=current.rhs
-                end
-                result+="#{current.str}"
-            else
-                result += "#{@value}"
-            end
+            result = "cookint : ident = #{@ident} | value = #{@value}"
             result
         end
     end
@@ -48,21 +34,7 @@ module Initialization
         end
 
         def to_s
-            result = "cookint : ident = #{@ident} | value = "
-            if @value.is_a?(Parser::Equation) == true
-                current = @value.bin
-                if current.rhs.is_a?(Parser::Binary)
-                    while current.is_a?(Parser::Binary)
-                        result+="#{current.lhs.str}#{current.op.symb_str}"
-                        current=current.rhs
-                    end
-                else
-                    current=current.rhs
-                end
-                result+="#{current.str}"
-            else
-                result += "#{@value}"
-            end
+            result = "cookdouble : ident = #{@ident} | value = #{@value}"
             result
         end
     end
