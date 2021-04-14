@@ -18,7 +18,7 @@ class Latex
     RULES={
         # Special char
         :coma => "\;",
-        :comment => /\#.[^\\]*/,
+        :comment => /\#.*/,
         :jump => /\n/,
         :space => /\s/,
         :sep => /\,/,
