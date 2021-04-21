@@ -97,8 +97,8 @@ class Parser
                 puts @du
             end
         rescue Exception => e
-            puts "PARSING ERROR : #{e}"
-            puts "in cookieLang source at position #{showNext.pos}"
+            puts "PARSING ERROR : #{e}".red
+            puts "in cookieLang source at position #{showNext.pos}".red
             #puts e.backtrace
             abort
         end

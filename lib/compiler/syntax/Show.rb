@@ -1,10 +1,12 @@
-class Show
+require_relative "AstNode"
+
+class Show < AstNode
     def initialize(content)
         @content = content
     end
 
     def to_s
-        result = "SHOW : content = #{@content}"
+        result = "show : content = #{@content}"
         result
     end
 end

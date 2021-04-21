@@ -1,5 +1,7 @@
+require_relative "AstNode"
+
 module Initialization
-    class Cookint
+    class Cookint < AstNode
         def initialize(ident,value)
             @ident = ident
             @value = value
@@ -19,7 +21,7 @@ module Initialization
         end
     end
 
-    class Cookdouble
+    class Cookdouble < AstNode
         def initialize(ident,value)
             @ident = ident
             @value = value
@@ -39,7 +41,7 @@ module Initialization
         end
     end
 
-    class Cookbool
+    class Cookbool < AstNode
         def initialize(ident,value)
             @ident = ident
             @value = value
@@ -59,7 +61,7 @@ module Initialization
         end
     end
 
-    class Cookchar
+    class Cookchar < AstNode
         def initialize(ident,value)
             @ident = ident
             @value = value
@@ -79,7 +81,7 @@ module Initialization
         end
     end
 
-    class Cookstring
+    class Cookstring < AstNode
         def initialize(ident,value)
             @ident = ident
             @value = value

@@ -1,5 +1,7 @@
+require_relative "AstNode"
+
 module Expression
-    class Equation
+    class Equation < AstNode
         attr_accessor :ident,:bin
         def initialize ident,bin
             @bin,@ident=bin,ident
@@ -20,7 +22,7 @@ module Expression
         end
     end
 
-    class Binary
+    class Binary < AstNode
         attr_accessor :lhs,:op,:rhs
         def initialize lhs,op,rhs
             @lhs,@rhs,@op=lhs,rhs,op
@@ -30,7 +32,7 @@ module Expression
         end
     end
 
-    class Id
+    class Id < AstNode
         attr_accessor :str
         def initialize str
             @str = str
@@ -40,7 +42,7 @@ module Expression
         end
     end
 
-    class Op
+    class Op < AstNode
         attr_accessor :symb_str
         def initialize symb_str
             @symb_str = symb_str

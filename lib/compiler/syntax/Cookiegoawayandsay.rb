@@ -1,4 +1,6 @@
-class Cookiegoawayandsay
+require_relative "AstNode"
+
+class Cookiegoawayandsay < AstNode
     def initialize(value)
         @value = value
     end

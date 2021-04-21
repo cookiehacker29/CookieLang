@@ -50,6 +50,11 @@ class CookieLang
       checking = Latex.new(options[:file], options[:verbose])
       checking.lex()
       tokens = checking.getToken()
+      
+      if options[:verbose] 
+        puts checking
+      end
+      
       puts "[OK] Lexical analytic successed".green
 
       puts "[INFO] Run of parsing analytic".blue
@@ -57,9 +62,7 @@ class CookieLang
       parse.parse()
       puts "[OK] Parsing analytic successed".green
 
-      if options[:verbose] 
-        puts checking
-      end
+      
     end
 
     exit(0)
