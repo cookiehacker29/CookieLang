@@ -1,0 +1,25 @@
+# DECLARE VARIABLE
+# All variable must init before all
+cookint a = 5+5/2-5
+cookint b
+cookint val = 50
+cookint i = 0
+cookint max = 5
+cookbool continue = 1b
+
+# IF test
+if a < b > val
+    cookint c = 5
+    if b < a
+        cookint d = 4
+    end
+    cookint e = 5*8/6
+end
+
+# WHILE test
+while continue
+    i = i + 1
+    if i == max
+        continue = 0b
+    end
+end

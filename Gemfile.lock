@@ -29,7 +29,7 @@ DEPENDENCIES
   rake
   simplecov (= 0.17)
   strscan
-  test-unit
+  test-unit (= 3.4.0)
 
 BUNDLED WITH
    2.2.5

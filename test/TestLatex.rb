@@ -4,6 +4,125 @@ SimpleCov.start 'rails'
 require 'test/unit'
 require_relative '../lib/compiler/lexical/Latex'
 
+require_relative '../lib/compiler/syntax/visitor/AstNode'
+
+require_relative '../lib/compiler/syntax/Cookiegoawayandsay'
+require_relative '../lib/compiler/syntax/Show'
+require_relative '../lib/compiler/syntax/Return'
+require_relative '../lib/compiler/syntax/Initialization'
+require_relative '../lib/compiler/syntax/DesignUnit'
+require_relative '../lib/compiler/syntax/Expression'
+require_relative '../lib/compiler/syntax/Parser'
+
+class TestParser < Test::Unit::TestCase
+    def testParseExample
+        checking = Latex.new(
+            "test/script/example.cookie", 
+            0)
+        checking.lex()
+        tokens = checking.getToken()
+        parse = Parser.new(tokens,0)
+        parse.parse()
+    end
+end
+
+class TestExpression < Test::Unit::TestCase
+    def testEquationWithID
+        eq = Expression::Equation.new(
+            Expression::Id.new("a"), 
+            Expression::Binary.new(5,"+",5))
+        assert_equal "a = 5+5", eq.to_s
+    end
+
+    def testEquationWithoutID
+        eq = Expression::Equation.new(
+            nil, 
+            Expression::Binary.new(5,"+",5))
+        assert_equal "5+5", eq.to_s
+    end
+
+    def testOp
+        op = Expression::Op.new("+")
+        assert_equal "+", op.to_s
+    end
+
+    def testId
+        id = Expression::Id.new("a")
+        assert_equal "a", id.to_s
+    end
+
+    def testBinary
+        bin = Expression::Binary.new(5,"+",5)
+        assert_equal "{BINARY = 5+5}", bin.to_s
+    end
+end
+
+class TestDesignUnit < Test::Unit::TestCase
+    def testDU
+        du = DesignUnit.new()
+        du << Initialization::Cookint.new('a', 5)
+        assert_equal "Result of parsing !\ncookint : ident = a | value = 5\n", du.to_s
+    end
+end
+
+class TestInitialization < Test::Unit::TestCase
+    def testInitInitializationCookint
+        ci = Initialization::Cookint.new('a', 5)
+        assert_equal 'a', ci.getIdent
+        assert_equal 5, ci.getValue
+        assert_equal "cookint : ident = a | value = 5", ci.to_s
+    end
+
+    def testInitInitializationCookdouble
+        cd = Initialization::Cookdouble.new('a', 5.0)
+        assert_equal 'a', cd.getIdent
+        assert_equal 5.0, cd.getValue
+        assert_equal "cookdouble : ident = a | value = 5.0", cd.to_s
+    end
+
+    def testInitInitializationCookchar
+        cc = Initialization::Cookchar.new('a', 'b')
+        assert_equal 'a', cc.getIdent
+        assert_equal 'b', cc.getValue
+        assert_equal "cookchar : ident = a | value = b", cc.to_s
+    end
+
+    def testInitInitializationCookstring
+        cs = Initialization::Cookstring.new('a', "cookie")
+        assert_equal 'a', cs.getIdent
+        assert_equal "cookie", cs.getValue
+        assert_equal "cookstring : ident = a | value = cookie", cs.to_s
+    end
+
+    def testInitInitializationCookbool
+        cb = Initialization::Cookbool.new('a', '1b')
+        assert_equal 'a', cb.getIdent
+        assert_equal '1b', cb.getValue
+        assert_equal "cookbool : ident = a | value = 1b", cb.to_s
+    end
+end
+
+class TestReturn < Test::Unit::TestCase
+    def testInitReturn
+        r = Return.new(5)
+        assert_equal "return : content = 5", r.to_s
+    end
+end
+
+class TestShow < Test::Unit::TestCase
+    def testInitShow
+        s = Show.new(5)
+        assert_equal "show : content = 5", s.to_s
+    end
+end
+
+class TestCookieGoawayandsay < Test::Unit::TestCase
+    def testInitCookieGoawayandsay
+        c = Cookiegoawayandsay.new(5)
+        assert_equal "Cookiegoawayandsay : 5", c.to_s
+    end
+end
+
 ##
 # This class allow to test the Latex Test
 #
