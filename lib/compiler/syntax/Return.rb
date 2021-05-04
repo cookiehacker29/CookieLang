@@ -1,6 +1,5 @@
-require_relative "AstNode"
-
 class Return < AstNode
+    attr_accessor :content
     def initialize content
         @content = content
     end

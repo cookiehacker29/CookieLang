@@ -1,5 +1,3 @@
-require_relative "AstNode"
-
 module Expression
     class Equation < AstNode
         attr_accessor :ident,:bin

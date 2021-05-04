@@ -1,3 +1,4 @@
+require_relative './visitor/AstNode'
 require_relative 'DesignUnit'
 require_relative 'Initialization'
 require_relative 'If'

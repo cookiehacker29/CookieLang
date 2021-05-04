@@ -1,6 +1,5 @@
-require_relative "AstNode"
-
 class Cookiegoawayandsay < AstNode
+    attr_accessor :value
     def initialize(value)
         @value = value
     end

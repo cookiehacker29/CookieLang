@@ -1,6 +1,6 @@
-require_relative "AstNode"
-
 class While < AstNode
+    attr_accessor :condition
+    attr_accessor :statement
     def initialize(condition,statement)
         @condition = condition
         @statement = statement
